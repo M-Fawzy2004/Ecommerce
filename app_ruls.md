@@ -1,4 +1,4 @@
-# REHLATAK APP — Engineering & Design Standards
+# Ecommerce APP — Engineering & Design Standards
 
 > Every rule here is binding. When in doubt, follow this file strictly.
 
