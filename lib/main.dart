@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -33,8 +34,16 @@ class EcommerceApp extends StatelessWidget {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'Ecommerce App',
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
+          theme: AppTheme.light.copyWith(
+            scaffoldBackgroundColor: AppColors.backgroundSoft,
+            useMaterial3: true,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: AppColors.backgroundSoft,
+              surfaceTintColor: AppColors.backgroundSoft,
+              scrolledUnderElevation: 0,
+              elevation: 0,
+            ),
+          ),
           scrollBehavior: const ScrollBehavior().copyWith(
             physics: const BouncingScrollPhysics(),
           ),
