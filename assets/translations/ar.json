@@ -14,7 +14,21 @@
     },
     "auth": {
         "login": "تسجيل الدخول",
-        "register": "إنشاء حساب"
+        "register": "إنشاء حساب",
+        "login_title": "مرحباً بعودتك",
+        "login_subtitle": "يرجى إدخال بياناتك لتسجيل الدخول",
+        "signup_title": "إنشاء حساب جديد",
+        "signup_subtitle": "انضم إلينا وابدأ رحلة التسوق الخاصة بك",
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور",
+        "confirm_password": "تأكيد كلمة المرور",
+        "username": "الاسم الكامل",
+        "forgot_password": "نسيت كلمة المرور؟",
+        "dont_have_account": "ليس لديك حساب؟",
+        "already_have_account": "لديك حساب بالفعل؟",
+        "email_hint": "أدخل بريدك الإلكتروني",
+        "password_hint": "أدخل كلمة المرور",
+        "username_hint": "أدخل اسمك الكامل"
     },
     "general": {
         "double_back_exit": "اضغط مرة أخرى للخروج"

@@ -13,8 +13,22 @@
         "get_started": "Get Started"
     },
     "auth": {
-        "login": "Login",
-        "register": "Register"
+        "login": "LOG IN",
+        "register": "SIGN UP",
+        "login_title": "Welcome Back",
+        "login_subtitle": "Please enter your details to sign in",
+        "signup_title": "Create Account",
+        "signup_subtitle": "Join us and start your shopping journey",
+        "email": "Email Address",
+        "password": "Password",
+        "confirm_password": "Confirm Password",
+        "username": "Full Name",
+        "forgot_password": "Forgot Password?",
+        "dont_have_account": "Don't have an account?",
+        "already_have_account": "Already have an account?",
+        "email_hint": "Enter your email",
+        "password_hint": "Enter your password",
+        "username_hint": "Enter your full name"
     },
     "general": {
         "double_back_exit": "Press back again to exit"

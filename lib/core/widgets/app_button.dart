@@ -27,8 +27,8 @@ class AppButton extends StatelessWidget {
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? AppColors.primary,
-        shape: RoundedRectangleBorder(borderRadius: AppRadius.r12),
-        minimumSize: Size(double.infinity, 50.h),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.r16),
+        minimumSize: Size(double.infinity, 45.h),
       ),
       child: isLoading
           ? SizedBox(
@@ -43,6 +43,7 @@ class AppButton extends StatelessWidget {
               text,
               style: AppTextStyles.buttonLarge.copyWith(
                 color: textColor ?? Colors.white,
+                fontWeight: FontWeight.bold,
               ),
             ),
     );

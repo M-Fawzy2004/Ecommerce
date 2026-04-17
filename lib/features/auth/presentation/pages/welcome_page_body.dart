@@ -1,10 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ecommerce_app/core/router/app_router.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
+import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
 import 'package:ecommerce_app/core/utils/assets.dart';
 import 'package:ecommerce_app/core/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class WelcomePageBody extends StatelessWidget {
   const WelcomePageBody({super.key});
@@ -48,18 +51,20 @@ class WelcomePageBody extends StatelessWidget {
             children: [
               AppButton(
                 text: 'auth.login'.tr(),
-                onPressed: () {
-                  // context.go(AppRouter.login);
-                },
+                backgroundColor: AppColors.backgroundSoft,
+                textColor: AppColors.primary,
+                onPressed: () => context.push(AppRouter.login),
               ),
               AppSpacing.h16,
-              AppButton(
-                text: 'auth.register'.tr(),
-                backgroundColor: AppColors.surface,
-                textColor: AppColors.primary,
-                onPressed: () {
-                  // context.go(AppRouter.register);
-                },
+              GestureDetector(
+                onTap: () => context.push(AppRouter.signup),
+                child: Text(
+                  'auth.register'.tr(),
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.backgroundSoft,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
