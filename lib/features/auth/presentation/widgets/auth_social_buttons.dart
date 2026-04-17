@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_radius.dart';
@@ -21,7 +22,7 @@ class AuthSocialButtons extends StatelessWidget {
       children: [
         Expanded(
           child: _SocialButton(
-            label: 'Google',
+            label: 'auth.google'.tr(),
             icon: const _GoogleIcon(),
             onTap: onGoogleTap,
           ),
@@ -29,7 +30,7 @@ class AuthSocialButtons extends StatelessWidget {
         AppSpacing.w12,
         Expanded(
           child: _SocialButton(
-            label: 'Apple',
+            label: 'auth.apple'.tr(),
             icon: Icon(Icons.apple, size: 22.r, color: AppColors.textPrimary),
             onTap: onAppleTap,
           ),

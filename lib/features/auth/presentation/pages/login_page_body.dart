@@ -50,7 +50,7 @@ class LoginPageBody extends StatelessWidget {
           Align(
             alignment: AlignmentDirectional.centerEnd,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () => context.push(AppRouter.forgotPassword),
               child: Text(
                 'auth.forgot_password'.tr(),
                 style: AppTextStyles.labelLarge.copyWith(

@@ -28,7 +28,26 @@
         "already_have_account": "لديك حساب بالفعل؟",
         "email_hint": "أدخل بريدك الإلكتروني",
         "password_hint": "أدخل كلمة المرور",
-        "username_hint": "أدخل اسمك الكامل"
+        "username_hint": "أدخل اسمك الكامل",
+        "verify_title": "التحقق من البريد",
+        "verify_subtitle": "لقد أرسلنا كوداً مكوناً من 6 أرقام إلى بريدك الإلكتروني",
+        "verify_button": "تحقق الآن",
+        "resend_code": "لم أستلم الكود. ",
+        "resend": "إعادة إرسال",
+        "timer_seconds": "ث",
+        "otp_sent": "تم إرسال كود التحقق إلى بريدك الإلكتروني",
+        "otp_resent": "تم إعادة إرسال الكود بنجاح",
+        "google": "جوجل",
+        "apple": "أبل",
+        "forgot_password_title": "نسيت كلمة المرور",
+        "forgot_password_subtitle": "أدخل بريدك الإلكتروني لتلقي كود التحقق",
+        "reset_password_title": "إعادة تعيين كلمة المرور",
+        "reset_password_subtitle": "أنشئ كلمة مرور جديدة وقوية لحسابك",
+        "new_password": "كلمة المرور الجديدة",
+        "confirm_new_password": "تأكيد كلمة المرور الجديدة",
+        "send_code": "إرسال الكود",
+        "update_password": "تحديث كلمة المرور",
+        "password_reset_success": "تم تحديث كلمة المرور بنجاح"
     },
     "general": {
         "double_back_exit": "اضغط مرة أخرى للخروج"

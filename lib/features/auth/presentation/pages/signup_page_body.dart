@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ecommerce_app/core/ui/toast/app_toast.dart';
 import 'package:ecommerce_app/core/router/app_router.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:ecommerce_app/core/theme/app_text_styles.dart';
@@ -11,8 +12,28 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
 
-class SignupPageBody extends StatelessWidget {
+class SignupPageBody extends StatefulWidget {
   const SignupPageBody({super.key});
+
+  @override
+  State<SignupPageBody> createState() => _SignupPageBodyState();
+}
+
+class _SignupPageBodyState extends State<SignupPageBody> {
+  bool _isLoading = false;
+
+  void _handleSignup() async {
+    setState(() => _isLoading = true);
+
+    // Simulate API call
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (mounted) {
+      setState(() => _isLoading = false);
+      AppToast.success(context, message: 'auth.otp_sent'.tr());
+      context.push(AppRouter.verification);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +76,7 @@ class SignupPageBody extends StatelessWidget {
           AppSpacing.h16,
           AppTextField(
             label: 'auth.confirm_password'.tr(),
-            hintText: 'auth.password_hint'.tr(), // Reuse password hint
+            hintText: 'auth.password_hint'.tr(),
             isPassword: true,
             prefixIcon: const Icon(IconlyLight.lock),
             suffixIcon: const Icon(IconlyLight.hide),
@@ -63,7 +84,8 @@ class SignupPageBody extends StatelessWidget {
           AppSpacing.h24,
           AppButton(
             text: 'auth.register'.tr(),
-            onPressed: () {},
+            isLoading: _isLoading,
+            onPressed: _handleSignup,
           ),
           AppSpacing.h20,
           Row(

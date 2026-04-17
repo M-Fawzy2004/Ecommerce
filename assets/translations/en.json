@@ -28,7 +28,26 @@
         "already_have_account": "Already have an account?",
         "email_hint": "Enter your email",
         "password_hint": "Enter your password",
-        "username_hint": "Enter your full name"
+        "username_hint": "Enter your full name",
+        "verify_title": "Verify Your Email",
+        "verify_subtitle": "We have sent a 6-digit code to your email",
+        "verify_button": "Verify Now",
+        "resend_code": "I didn't receive the code. ",
+        "resend": "Resend",
+        "timer_seconds": "s",
+        "otp_sent": "Verification code sent to your email",
+        "otp_resent": "Code resent successfully",
+        "google": "Google",
+        "apple": "Apple",
+        "forgot_password_title": "Forgot Password",
+        "forgot_password_subtitle": "Enter your email to receive a verification code",
+        "reset_password_title": "Reset Password",
+        "reset_password_subtitle": "Create a new strong password for your account",
+        "new_password": "New Password",
+        "confirm_new_password": "Confirm New Password",
+        "send_code": "Send Code",
+        "update_password": "Update Password",
+        "password_reset_success": "Password updated successfully"
     },
     "general": {
         "double_back_exit": "Press back again to exit"

@@ -1,5 +1,7 @@
+import 'package:ecommerce_app/features/auth/presentation/pages/forgot_password_page.dart';
 import 'package:ecommerce_app/features/auth/presentation/pages/login_page.dart';
 import 'package:ecommerce_app/features/auth/presentation/pages/signup_page.dart';
+import 'package:ecommerce_app/features/auth/presentation/pages/verification_page.dart';
 import 'package:ecommerce_app/features/auth/presentation/pages/welcome_page.dart';
 import 'package:ecommerce_app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +15,8 @@ abstract class AppRouter {
   static const String auth = '/auth';
   static const String login = '/login';
   static const String signup = '/signup';
+  static const String verification = '/verification';
+  static const String forgotPassword = '/forgot-password';
 
   // ── Configuration ────────────────────────────────────────────────────────
   static final GoRouter router = GoRouter(
@@ -37,6 +41,14 @@ abstract class AppRouter {
       GoRoute(
         path: signup,
         builder: (context, state) => const SignupPage(),
+      ),
+      GoRoute(
+        path: verification,
+        builder: (context, state) => const VerificationPage(),
+      ),
+      GoRoute(
+        path: forgotPassword,
+        builder: (context, state) => const ForgotPasswordPage(),
       ),
     ],
   );
