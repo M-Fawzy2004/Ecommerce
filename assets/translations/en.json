@@ -1,5 +1,15 @@
 {
     "splash": {
         "title": "E-commerce App"
+    },
+    "onboarding": {
+        "title1": "Discover Premium Products",
+        "desc1": "Browse our curated selection of high-quality items from world-class brands.",
+        "title2": "Secure Fashion Experience",
+        "desc2": "Experience a worry-free shopping journey with our verified and secure payment systems.",
+        "title3": "Swift & Reliable Delivery",
+        "desc3": "Your convenience is our priority. We deliver your favorite items right to your doorstep, fast.",
+        "next": "Next",
+        "get_started": "Get Started"
     }
 }

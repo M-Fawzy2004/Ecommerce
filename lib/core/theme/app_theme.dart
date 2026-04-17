@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 import 'app_text_styles.dart';
 
@@ -6,6 +7,7 @@ import 'app_text_styles.dart';
 abstract class AppTheme {
   static ThemeData get light => ThemeData(
         useMaterial3: true,
+        fontFamily: GoogleFonts.cairo().fontFamily,
         scaffoldBackgroundColor: AppColors.backgroundSoft,
         primaryColor: AppColors.primary,
         colorScheme: const ColorScheme.light(
@@ -17,9 +19,11 @@ abstract class AppTheme {
           error: AppColors.error,
         ),
         appBarTheme: AppBarTheme(
-          backgroundColor: AppColors.surface,
+          backgroundColor: AppColors.backgroundSoft,
+          surfaceTintColor: AppColors.backgroundSoft,
           foregroundColor: AppColors.textPrimary,
           elevation: 0,
+          scrolledUnderElevation: 0,
           centerTitle: true,
           titleTextStyle: AppTextStyles.headlineSmall,
         ),
@@ -63,6 +67,7 @@ abstract class AppTheme {
 
   static ThemeData get dark => ThemeData(
         useMaterial3: true,
+        fontFamily: GoogleFonts.cairo().fontFamily,
         scaffoldBackgroundColor: AppColors.backgroundDark,
         primaryColor: AppColors.primary,
         colorScheme: const ColorScheme.dark(

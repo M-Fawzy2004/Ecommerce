@@ -1,8 +1,10 @@
+import 'package:ecommerce_app/core/router/app_router.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
 import 'package:ecommerce_app/core/utils/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
 /// SplashPageBody: Contains the actual UI and logic for the splash screen.
@@ -74,8 +76,7 @@ class _SplashPageBodyState extends State<SplashPageBody>
     // Simulate initial loading or auth check
     await Future.delayed(const Duration(seconds: 3));
     if (mounted) {
-      // For now, just stay on splash or go to home if implemented
-      // context.go(AppRouter.home);
+      context.go(AppRouter.onboarding);
     }
   }
 

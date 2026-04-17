@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import '../network/api_client.dart';
 import '../network/network_info.dart';
 
@@ -17,8 +18,13 @@ Future<void> initDependencies() async {
 
   // ── Features ──────────────────────────────────────────────────────────────
   // We will register feature dependencies here as we build them.
+  _initOnboardingDependencies();
   _initAuthDependencies();
   _initProductsDependencies();
+}
+
+void _initOnboardingDependencies() {
+  serviceLocator.registerFactory(() => OnboardingCubit());
 }
 
 void _initAuthDependencies() {
