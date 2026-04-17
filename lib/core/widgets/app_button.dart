@@ -28,7 +28,7 @@ class AppButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? AppColors.primary,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.r12),
-        minimumSize: Size(double.infinity, 52.h),
+        minimumSize: Size(double.infinity, 50.h),
       ),
       child: isLoading
           ? SizedBox(

@@ -50,6 +50,7 @@ flutter:
     - assets/translations/
     - assets/images/icons/
     - assets/images/svg/
+    - assets/images/png/
     - assets/lottie/
   # ── Flutter Assets ───────────────────────────────────
 flutter_assets:

@@ -11,5 +11,12 @@
         "desc3": "Your convenience is our priority. We deliver your favorite items right to your doorstep, fast.",
         "next": "Next",
         "get_started": "Get Started"
+    },
+    "auth": {
+        "login": "Login",
+        "register": "Register"
+    },
+    "general": {
+        "double_back_exit": "Press back again to exit"
     }
 }

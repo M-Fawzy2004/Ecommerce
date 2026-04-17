@@ -2,6 +2,10 @@
 class Assets {
   Assets._();
   
+  /// Assets for imagesPngWelcomePage
+  /// assets/images/png/welcome_page.png
+  static const String imagesPngWelcomePage = "assets/images/png/welcome_page.png";
+
   /// Assets for imagesSvgBag
   /// assets/images/svg/bag.svg
   static const String imagesSvgBag = "assets/images/svg/bag.svg";
@@ -14,17 +18,17 @@ class Assets {
   /// assets/images/svg/cart.svg
   static const String imagesSvgCart = "assets/images/svg/cart.svg";
 
-  /// Assets for imagesSvgCart add
-  /// assets/images/svg/cart add.svg
-  static const String imagesSvgCartAdd = "assets/images/svg/cart add.svg";
+  /// Assets for imagesSvgCartAdd
+  /// assets/images/svg/cart_add.svg
+  static const String imagesSvgCartAdd = "assets/images/svg/cart_add.svg";
 
-  /// Assets for imagesSvgCart download
-  /// assets/images/svg/cart download.svg
-  static const String imagesSvgCartDownload = "assets/images/svg/cart download.svg";
+  /// Assets for imagesSvgCartDownload
+  /// assets/images/svg/cart_download.svg
+  static const String imagesSvgCartDownload = "assets/images/svg/cart_download.svg";
 
-  /// Assets for imagesSvgCart upload
-  /// assets/images/svg/cart upload.svg
-  static const String imagesSvgCartUpload = "assets/images/svg/cart upload.svg";
+  /// Assets for imagesSvgCartUpload
+  /// assets/images/svg/cart_upload.svg
+  static const String imagesSvgCartUpload = "assets/images/svg/cart_upload.svg";
 
   /// Assets for imagesSvgChart
   /// assets/images/svg/chart.svg
@@ -50,9 +54,9 @@ class Assets {
   /// assets/images/svg/eye.svg
   static const String imagesSvgEye = "assets/images/svg/eye.svg";
 
-  /// Assets for imagesSvgEye closed
-  /// assets/images/svg/eye closed.svg
-  static const String imagesSvgEyeClosed = "assets/images/svg/eye closed.svg";
+  /// Assets for imagesSvgEyeClosed
+  /// assets/images/svg/eye_closed.svg
+  static const String imagesSvgEyeClosed = "assets/images/svg/eye_closed.svg";
 
   /// Assets for imagesSvgFilter
   /// assets/images/svg/filter.svg
@@ -70,9 +74,9 @@ class Assets {
   /// assets/images/svg/home.svg
   static const String imagesSvgHome = "assets/images/svg/home.svg";
 
-  /// Assets for imagesSvgLeft arrow
-  /// assets/images/svg/left arrow.svg
-  static const String imagesSvgLeftArrow = "assets/images/svg/left arrow.svg";
+  /// Assets for imagesSvgLeftArrow
+  /// assets/images/svg/left_arrow.svg
+  static const String imagesSvgLeftArrow = "assets/images/svg/left_arrow.svg";
 
   /// Assets for imagesSvgLocation
   /// assets/images/svg/location.svg
@@ -82,9 +86,9 @@ class Assets {
   /// assets/images/svg/lock.svg
   static const String imagesSvgLock = "assets/images/svg/lock.svg";
 
-  /// Assets for imagesSvgLock open
-  /// assets/images/svg/lock open.svg
-  static const String imagesSvgLockOpen = "assets/images/svg/lock open.svg";
+  /// Assets for imagesSvgLockOpen
+  /// assets/images/svg/lock_open.svg
+  static const String imagesSvgLockOpen = "assets/images/svg/lock_open.svg";
 
   /// Assets for imagesSvgMenu
   /// assets/images/svg/menu.svg
@@ -98,9 +102,9 @@ class Assets {
   /// assets/images/svg/money.svg
   static const String imagesSvgMoney = "assets/images/svg/money.svg";
 
-  /// Assets for imagesSvgMoney dollar
-  /// assets/images/svg/money dollar.svg
-  static const String imagesSvgMoneyDollar = "assets/images/svg/money dollar.svg";
+  /// Assets for imagesSvgMoneyDollar
+  /// assets/images/svg/money_dollar.svg
+  static const String imagesSvgMoneyDollar = "assets/images/svg/money_dollar.svg";
 
   /// Assets for imagesSvgOffer
   /// assets/images/svg/offer.svg
@@ -114,9 +118,9 @@ class Assets {
   /// assets/images/svg/reload.svg
   static const String imagesSvgReload = "assets/images/svg/reload.svg";
 
-  /// Assets for imagesSvgRight arrow
-  /// assets/images/svg/right arrow.svg
-  static const String imagesSvgRightArrow = "assets/images/svg/right arrow.svg";
+  /// Assets for imagesSvgRightArrow
+  /// assets/images/svg/right_arrow.svg
+  static const String imagesSvgRightArrow = "assets/images/svg/right_arrow.svg";
 
   /// Assets for imagesSvgSearch
   /// assets/images/svg/search.svg

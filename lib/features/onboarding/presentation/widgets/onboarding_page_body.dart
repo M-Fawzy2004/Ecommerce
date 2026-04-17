@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:ecommerce_app/core/router/app_router.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
@@ -6,6 +7,7 @@ import 'package:ecommerce_app/core/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import '../cubit/onboarding_cubit.dart';
 
@@ -109,7 +111,7 @@ class _OnboardingPageBodyState extends State<OnboardingPageBody> {
                     : 'onboarding.next'.tr(),
                 onPressed: () {
                   if (isLastPage) {
-                    // context.go(AppRouter.auth);
+                    context.go(AppRouter.auth);
                   } else {
                     _pageController.nextPage(
                       duration: const Duration(milliseconds: 400),
