@@ -3,7 +3,12 @@ import 'package:ecommerce_app/features/auth/presentation/pages/login_page.dart';
 import 'package:ecommerce_app/features/auth/presentation/pages/signup_page.dart';
 import 'package:ecommerce_app/features/auth/presentation/pages/verification_page.dart';
 import 'package:ecommerce_app/features/auth/presentation/pages/welcome_page.dart';
+import 'package:ecommerce_app/features/categories/presentation/pages/categories_page.dart';
+import 'package:ecommerce_app/features/home/presentation/pages/home_page.dart';
+import 'package:ecommerce_app/features/main/presentation/pages/main_wrapper_page.dart';
 import 'package:ecommerce_app/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:ecommerce_app/features/orders/presentation/pages/orders_page.dart';
+import 'package:ecommerce_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 
@@ -17,6 +22,11 @@ abstract class AppRouter {
   static const String signup = '/signup';
   static const String verification = '/verification';
   static const String forgotPassword = '/forgot-password';
+  
+  static const String home = '/home';
+  static const String categories = '/categories';
+  static const String orders = '/orders';
+  static const String profile = '/profile';
 
   // ── Configuration ────────────────────────────────────────────────────────
   static final GoRouter router = GoRouter(
@@ -52,6 +62,45 @@ abstract class AppRouter {
       GoRoute(
         path: forgotPassword,
         builder: (context, state) => const ForgotPasswordPage(),
+      ),
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return MainWrapperPage(navigationShell: navigationShell);
+        },
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: home,
+                builder: (context, state) => const HomePage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: categories,
+                builder: (context, state) => const CategoriesPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: orders,
+                builder: (context, state) => const OrdersPage(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: profile,
+                builder: (context, state) => const ProfilePage(),
+              ),
+            ],
+          ),
+        ],
       ),
     ],
   );

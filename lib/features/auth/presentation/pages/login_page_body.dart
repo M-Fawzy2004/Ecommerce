@@ -38,7 +38,7 @@ class _LoginPageBodyState extends State<LoginPageBody> {
           AppToast.error(context, message: state.message);
         } else if (state is AuthAuthenticated) {
           AppToast.success(context, message: 'auth.login_success'.tr());
-          // context.go(AppRouter.home); // Navigate to home
+          context.go(AppRouter.home);
         } else if (state is AuthUnverified) {
           AppToast.error(context, message: 'auth.verify_first_error'.tr());
           context.push(AppRouter.verification, extra: state.email);

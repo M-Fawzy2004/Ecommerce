@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/theme/app_text_styles.dart';
 
 /// SplashPageBody: Contains the actual UI and logic for the splash screen.
@@ -73,10 +74,15 @@ class _SplashPageBodyState extends State<SplashPageBody>
   }
 
   void _navigateToNext() async {
-    // Simulate initial loading or auth check
+    // Simulate initial loading and check auth session
     await Future.delayed(const Duration(seconds: 3));
     if (mounted) {
-      context.go(AppRouter.onboarding);
+      final session = Supabase.instance.client.auth.currentSession;
+      if (session != null) {
+        context.go(AppRouter.home);
+      } else {
+        context.go(AppRouter.onboarding);
+      }
     }
   }
 

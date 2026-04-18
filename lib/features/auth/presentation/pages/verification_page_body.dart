@@ -93,7 +93,7 @@ class _VerificationPageBodyState extends State<VerificationPageBody> {
           // Supabase automatically logs in the user after verification.
           AppToast.success(context, message: 'auth.verification_success'.tr());
           // Navigate to Home or Login based on your app's flow
-          context.go(AppRouter.login);
+          context.go(AppRouter.home);
         }
       },
       child: SingleChildScrollView(
