@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 /// ⚠ Never use raw Color() or Colors.* outside this file.
 abstract class AppColors {
   // ── Brand ────────────────────────────────────────────────────────────────
-  static const Color primary = Color(0xFF0057FF);
-  static const Color primaryLight = Color(0xFF4D8AFF);
-  static const Color primaryDark = Color(0xFF003DBF);
+  static const Color primary = Color.fromARGB(255, 0, 115, 153);
+  static const Color primaryLight = Color.fromARGB(255, 0, 154, 204);
+  static const Color primaryDark = Color.fromARGB(255, 0, 76, 102);
 
   static const Color secondary = Color(0xFFFF6B35);
   static const Color secondaryLight = Color(0xFFFF9A70);
