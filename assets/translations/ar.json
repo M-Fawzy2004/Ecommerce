@@ -55,7 +55,12 @@
         "full_name_error": "يرجى إدخال اسمين على الأقل (الأول والأخير)",
         "valid_full_name": "تنسيق الاسم صحيح",
         "password_match_error": "كلمات المرور غير متطابقة",
-        "valid_match": "كلمات المرور متطابقة"
+        "valid_match": "كلمات المرور متطابقة",
+        "login_success": "تم تسجيل الدخول بنجاح",
+        "otp_error": "يرجى إدخال الكود المكون من 6 أرقام بشكل صحيح",
+        "verify_first_error": "يرجى التحقق من بريدك الإلكتروني أولاً.",
+        "account_exists_unverified": "الحساب موجود مسبقاً. يرجى التحقق من بريدك الإلكتروني.",
+        "verification_success": "تم التحقق بنجاح"
     },
     "general": {
         "double_back_exit": "اضغط مرة أخرى للخروج"

@@ -10,7 +10,7 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return BlocProvider<OnboardingCubit>(
       create: (context) => serviceLocator<OnboardingCubit>(),
       child: const DoubleBackToExitWrapper(
         child: Scaffold(

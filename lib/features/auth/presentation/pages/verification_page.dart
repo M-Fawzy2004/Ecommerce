@@ -1,20 +1,28 @@
+import 'package:ecommerce_app/core/di/init_dependencies.dart';
 import 'package:ecommerce_app/core/widgets/double_back_to_exit_wrapper.dart';
+import 'package:ecommerce_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'verification_page_body.dart';
 
 class VerificationPage extends StatelessWidget {
-  const VerificationPage({super.key});
+  final String email;
+
+  const VerificationPage({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
-    return DoubleBackToExitWrapper(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.w),
-            child: const VerificationPageBody(),
+    return BlocProvider<AuthCubit>(
+      create: (_) => serviceLocator<AuthCubit>(),
+      child: DoubleBackToExitWrapper(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: VerificationPageBody(email: email),
+            ),
           ),
         ),
       ),

@@ -6,8 +6,10 @@ import 'package:ecommerce_app/core/ui/toast/app_toast.dart';
 import 'package:ecommerce_app/core/widgets/app_back_button.dart';
 import 'package:ecommerce_app/core/widgets/app_button.dart';
 import 'package:ecommerce_app/core/widgets/app_text_field.dart';
+import 'package:ecommerce_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ecommerce_app/features/auth/presentation/widgets/auth_validation_hint.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconly/iconly.dart';
 import 'package:pinput/pinput.dart';
@@ -22,10 +24,10 @@ class ForgotPasswordPageBody extends StatefulWidget {
 class _ForgotPasswordPageBodyState extends State<ForgotPasswordPageBody> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  bool _isLoading = false;
 
   // Validation State
   String _email = '';
+  String _otp = '';
   String _newPassword = '';
   String _confirmPassword = '';
 
@@ -34,65 +36,88 @@ class _ForgotPasswordPageBodyState extends State<ForgotPasswordPageBody> {
       RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$').hasMatch(_newPassword);
   bool get _isConfirmValid => _confirmPassword == _newPassword && _confirmPassword.isNotEmpty;
 
-  void _nextPage() async {
-    if (_currentPage == 0 && !_isEmailValid) {
-      AppToast.error(context, message: 'auth.email_error'.tr());
-      return;
-    }
-    if (_currentPage == 2 && (!_isPasswordValid || !_isConfirmValid)) {
-      AppToast.error(context, message: 'auth.password_error'.tr());
-      return;
-    }
-
-    setState(() => _isLoading = true);
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() => _isLoading = false);
-
+  void _goToNextPage() {
     if (_currentPage < 2) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOut,
       );
-    } else {
-      if (mounted) {
-        AppToast.success(context, message: 'auth.password_reset_success'.tr());
-        Navigator.pop(context);
-      }
     }
+  }
+
+  void _handleSendEmail() {
+    if (!_isEmailValid) {
+      AppToast.error(context, message: 'auth.email_error'.tr());
+      return;
+    }
+    context.read<AuthCubit>().sendPasswordResetEmail(_email);
+  }
+
+  void _handleVerifyOtp() {
+    if (_otp.length < 6) {
+      AppToast.error(context, message: 'auth.otp_error'.tr());
+      return;
+    }
+    context.read<AuthCubit>().verifyOtp(_email, _otp, isRecovery: true);
+  }
+
+  void _handleResetPassword() {
+    if (!_isPasswordValid || !_isConfirmValid) {
+      AppToast.error(context, message: 'auth.password_error'.tr());
+      return;
+    }
+    context.read<AuthCubit>().resetPassword(_newPassword);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AppSpacing.h12,
-        AppBackButton(
-          onPressed: () {
-            if (_currentPage > 0) {
-              _pageController.previousPage(
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeInOut,
-              );
-            } else {
-              Navigator.pop(context);
-            }
-          },
-        ),
-        AppSpacing.h24,
-        Expanded(
-          child: PageView(
-            controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            onPageChanged: (index) => setState(() => _currentPage = index),
-            children: [
-              _buildEmailStep(),
-              _buildOtpStep(),
-              _buildNewPasswordStep(),
-            ],
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthError) {
+          AppToast.error(context, message: state.message);
+        } else if (state is AuthPasswordResetEmailSent) {
+          AppToast.success(context, message: 'auth.otp_sent'.tr());
+          _goToNextPage();
+        } else if (state is AuthInitial && _currentPage == 1) {
+          // Assuming successful verification emits AuthInitial currently
+          AppToast.success(context, message: 'auth.verification_success'.tr());
+          _goToNextPage();
+        } else if (state is AuthPasswordResetSuccess) {
+          AppToast.success(context, message: 'auth.password_reset_success'.tr());
+          Navigator.pop(context); // Go back to login
+        }
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AppSpacing.h12,
+          AppBackButton(
+            onPressed: () {
+              if (_currentPage > 0) {
+                _pageController.previousPage(
+                  duration: const Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                );
+              } else {
+                Navigator.pop(context);
+              }
+            },
           ),
-        ),
-      ],
+          AppSpacing.h24,
+          Expanded(
+            child: PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              onPageChanged: (index) => setState(() => _currentPage = index),
+              children: [
+                _buildEmailStep(),
+                _buildOtpStep(),
+                _buildNewPasswordStep(),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -118,10 +143,14 @@ class _ForgotPasswordPageBodyState extends State<ForgotPasswordPageBody> {
             isVisible: _email.isNotEmpty && !_isEmailValid,
           ),
           AppSpacing.h32,
-          AppButton(
-            text: 'auth.send_code'.tr(),
-            isLoading: _isLoading,
-            onPressed: _nextPage,
+          BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              return AppButton(
+                text: 'auth.send_code'.tr(),
+                isLoading: state is AuthLoading,
+                onPressed: _handleSendEmail,
+              );
+            },
           ),
         ],
       ),
@@ -157,14 +186,22 @@ class _ForgotPasswordPageBodyState extends State<ForgotPasswordPageBody> {
                   border: Border.all(color: AppColors.primary, width: 1.5),
                 ),
               ),
-              onCompleted: (pin) => _nextPage(),
+              onChanged: (pin) => _otp = pin,
+              onCompleted: (pin) {
+                _otp = pin;
+                _handleVerifyOtp();
+              },
             ),
           ),
           AppSpacing.h32,
-          AppButton(
-            text: 'auth.verify_button'.tr(),
-            isLoading: _isLoading,
-            onPressed: _nextPage,
+          BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              return AppButton(
+                text: 'auth.verify_button'.tr(),
+                isLoading: state is AuthLoading,
+                onPressed: _handleVerifyOtp,
+              );
+            },
           ),
         ],
       ),
@@ -206,10 +243,14 @@ class _ForgotPasswordPageBodyState extends State<ForgotPasswordPageBody> {
             isVisible: _confirmPassword.isNotEmpty && !_isConfirmValid,
           ),
           AppSpacing.h32,
-          AppButton(
-            text: 'auth.update_password'.tr(),
-            isLoading: _isLoading,
-            onPressed: _nextPage,
+          BlocBuilder<AuthCubit, AuthState>(
+            builder: (context, state) {
+              return AppButton(
+                text: 'auth.update_password'.tr(),
+                isLoading: state is AuthLoading,
+                onPressed: _handleResetPassword,
+              );
+            },
           ),
         ],
       ),

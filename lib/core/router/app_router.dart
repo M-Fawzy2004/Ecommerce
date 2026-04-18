@@ -44,7 +44,10 @@ abstract class AppRouter {
       ),
       GoRoute(
         path: verification,
-        builder: (context, state) => const VerificationPage(),
+        builder: (context, state) {
+          final email = state.extra as String? ?? '';
+          return VerificationPage(email: email);
+        },
       ),
       GoRoute(
         path: forgotPassword,
