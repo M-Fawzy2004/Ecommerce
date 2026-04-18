@@ -3,16 +3,30 @@ import 'package:ecommerce_app/core/router/app_router.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
+import 'package:ecommerce_app/core/ui/toast/app_toast.dart';
 import 'package:ecommerce_app/core/widgets/app_back_button.dart';
 import 'package:ecommerce_app/core/widgets/app_button.dart';
 import 'package:ecommerce_app/core/widgets/app_text_field.dart';
 import 'package:ecommerce_app/features/auth/presentation/widgets/auth_social_buttons.dart';
+import 'package:ecommerce_app/features/auth/presentation/widgets/auth_validation_hint.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
 
-class LoginPageBody extends StatelessWidget {
+class LoginPageBody extends StatefulWidget {
   const LoginPageBody({super.key});
+
+  @override
+  State<LoginPageBody> createState() => _LoginPageBodyState();
+}
+
+class _LoginPageBodyState extends State<LoginPageBody> {
+  String _email = '';
+  String _password = '';
+
+  bool get _isEmailValid => _email.endsWith('@gmail.com');
+  bool get _isPasswordValid =>
+      RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$').hasMatch(_password);
 
   @override
   Widget build(BuildContext context) {
@@ -23,28 +37,33 @@ class LoginPageBody extends StatelessWidget {
           AppSpacing.h12,
           const AppBackButton(),
           AppSpacing.h24,
-          Text(
-            'auth.login_title'.tr(),
-            style: AppTextStyles.displayLarge,
-          ),
-          Text(
-            'auth.login_subtitle'.tr(),
-            style: AppTextStyles.bodyLarge,
-          ),
+          Text('auth.login_title'.tr(), style: AppTextStyles.displayLarge),
+          Text('auth.login_subtitle'.tr(), style: AppTextStyles.bodyLarge),
           AppSpacing.h40,
           AppTextField(
             label: 'auth.email'.tr(),
             hintText: 'auth.email_hint'.tr(),
             keyboardType: TextInputType.emailAddress,
             prefixIcon: const Icon(IconlyLight.message),
+            onChanged: (val) => setState(() => _email = val),
           ),
-          AppSpacing.h24,
+          AuthValidationHint(
+            label: 'auth.email_error'.tr(),
+            isValid: _isEmailValid,
+            isVisible: _email.isNotEmpty && !_isEmailValid,
+          ),
+          AppSpacing.h20,
           AppTextField(
             label: 'auth.password'.tr(),
             hintText: 'auth.password_hint'.tr(),
             isPassword: true,
             prefixIcon: const Icon(IconlyLight.lock),
-            suffixIcon: const Icon(IconlyLight.hide),
+            onChanged: (val) => setState(() => _password = val),
+          ),
+          AuthValidationHint(
+            label: 'auth.password_error'.tr(),
+            isValid: _isPasswordValid,
+            isVisible: _password.isNotEmpty && !_isPasswordValid,
           ),
           AppSpacing.h4,
           Align(
@@ -63,16 +82,20 @@ class LoginPageBody extends StatelessWidget {
           AppSpacing.h24,
           AppButton(
             text: 'auth.login'.tr(),
-            onPressed: () {},
+            onPressed: () {
+              if (!_isEmailValid || !_isPasswordValid) {
+                AppToast.error(context, message: 'auth.email_error'.tr());
+                return;
+              }
+              // Handle Login
+            },
           ),
           AppSpacing.h4,
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'auth.dont_have_account'.tr(),
-                style: AppTextStyles.bodyMedium,
-              ),
+              Text('auth.dont_have_account'.tr(),
+                  style: AppTextStyles.bodyMedium),
               TextButton(
                 onPressed: () => context.push(AppRouter.signup),
                 child: Text(

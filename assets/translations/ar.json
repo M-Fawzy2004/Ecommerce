@@ -47,7 +47,15 @@
         "confirm_new_password": "تأكيد كلمة المرور الجديدة",
         "send_code": "إرسال الكود",
         "update_password": "تحديث كلمة المرور",
-        "password_reset_success": "تم تحديث كلمة المرور بنجاح"
+        "password_reset_success": "تم تحديث كلمة المرور بنجاح",
+        "email_error": "يرجى إدخال بريد Gmail صحيح (@gmail.com)",
+        "password_error": "يجب أن تحتوي كلمة المرور على أحرف كبيرة وصغيرة وأرقام",
+        "valid_email": "بريد Gmail صحيح",
+        "valid_password": "كلمة مرور قوية",
+        "full_name_error": "يرجى إدخال اسمين على الأقل (الأول والأخير)",
+        "valid_full_name": "تنسيق الاسم صحيح",
+        "password_match_error": "كلمات المرور غير متطابقة",
+        "valid_match": "كلمات المرور متطابقة"
     },
     "general": {
         "double_back_exit": "اضغط مرة أخرى للخروج"
