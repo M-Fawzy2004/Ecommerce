@@ -4,6 +4,7 @@ import 'package:ecommerce_app/features/auth/presentation/pages/signup_page.dart'
 import 'package:ecommerce_app/features/auth/presentation/pages/verification_page.dart';
 import 'package:ecommerce_app/features/auth/presentation/pages/welcome_page.dart';
 import 'package:ecommerce_app/features/categories/presentation/pages/categories_page.dart';
+import 'package:ecommerce_app/features/categories/presentation/pages/category_products_page.dart';
 import 'package:ecommerce_app/features/home/presentation/pages/home_page.dart';
 import 'package:ecommerce_app/features/main/presentation/pages/main_wrapper_page.dart';
 import 'package:ecommerce_app/features/onboarding/presentation/pages/onboarding_page.dart';
@@ -27,6 +28,8 @@ abstract class AppRouter {
   static const String categories = '/categories';
   static const String orders = '/orders';
   static const String profile = '/profile';
+
+  static const String categoryProducts = '/category-products';
 
   // ── Configuration ────────────────────────────────────────────────────────
   static final GoRouter router = GoRouter(
@@ -62,6 +65,13 @@ abstract class AppRouter {
       GoRoute(
         path: forgotPassword,
         builder: (context, state) => const ForgotPasswordPage(),
+      ),
+      GoRoute(
+        path: categoryProducts,
+        builder: (context, state) {
+          final categoryName = state.extra as String? ?? 'Category';
+          return CategoryProductsPage(categoryName: categoryName);
+        },
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

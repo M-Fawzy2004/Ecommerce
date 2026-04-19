@@ -16,6 +16,8 @@ abstract class AppSpacing {
   static SizedBox get h48 => SizedBox(height: 48.h);
   static SizedBox get h56 => SizedBox(height: 56.h);
   static SizedBox get h64 => SizedBox(height: 64.h);
+  static SizedBox get h80 => SizedBox(height: 80.h);
+  static SizedBox get h100 => SizedBox(height: 100.h);
 
   // ── Horizontal Spacing (Width) ─────────────────────────────────────────
   static SizedBox get w4 => SizedBox(width: 4.w);

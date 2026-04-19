@@ -74,7 +74,38 @@
     "navbar": {
         "home": "Home",
         "categories": "Categories",
-        "orders": "Orders",
+        "cart": "Cart",
         "profile": "Profile"
+    },
+    "categories": {
+        "title": "All Categories",
+        "fashion": "Fashion",
+        "electronics": "Electronics",
+        "laptops": "Laptops",
+        "headphones": "Headphones",
+        "smartphones": "Smartphones",
+        "tshirt": "T-Shirts"
+    },
+    "profile": {
+        "title": "Profile",
+        "notification": "Notification",
+        "dark_mode": "Dark Mode",
+        "rate_app": "Rate App",
+        "share_app": "Share App",
+        "privacy_policy": "Privacy Policy",
+        "terms_conditions": "Terms and Conditions",
+        "cookies_policy": "Cookies Policy",
+        "contact": "Contact",
+        "feedback": "Feedback",
+        "logout": "Logout",
+        "favorite": "Favorite",
+        "cart": "Cart",
+        "orders": "Orders"
+    },
+    "dialog": {
+        "logout_title": "Logout",
+        "logout_message": "Are you sure you want to log out from your account?",
+        "cancel": "Cancel",
+        "confirm": "Logout"
     }
 }

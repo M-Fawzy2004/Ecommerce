@@ -1,3 +1,5 @@
+import 'package:ecommerce_app/core/usecase/usecase.dart';
+import 'package:ecommerce_app/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/auth_user.dart';
@@ -6,7 +8,7 @@ import '../../domain/usecases/resend_otp_usecase.dart';
 import '../../domain/usecases/reset_password_usecase.dart';
 import '../../domain/usecases/send_password_reset_email_usecase.dart';
 import '../../domain/usecases/signup_usecase.dart';
-import '../../domain/usecases/verify_otp_usecase.dart';
+import '../../domain/usecases/logout_usecase.dart';
 
 part 'auth_state.dart';
 
@@ -17,6 +19,7 @@ class AuthCubit extends Cubit<AuthState> {
   final ResendOtpUseCase _resendOtpUseCase;
   final SendPasswordResetEmailUseCase _sendResetEmailUseCase;
   final ResetPasswordUseCase _resetPasswordUseCase;
+  final LogoutUseCase _logoutUseCase;
 
   AuthCubit({
     required SignUpUseCase signUpUseCase,
@@ -25,17 +28,20 @@ class AuthCubit extends Cubit<AuthState> {
     required ResendOtpUseCase resendOtpUseCase,
     required SendPasswordResetEmailUseCase sendResetEmailUseCase,
     required ResetPasswordUseCase resetPasswordUseCase,
+    required LogoutUseCase logoutUseCase,
   })  : _signUpUseCase = signUpUseCase,
         _loginUseCase = loginUseCase,
         _verifyOtpUseCase = verifyOtpUseCase,
         _resendOtpUseCase = resendOtpUseCase,
         _sendResetEmailUseCase = sendResetEmailUseCase,
         _resetPasswordUseCase = resetPasswordUseCase,
+        _logoutUseCase = logoutUseCase,
         super(AuthInitial());
 
   Future<void> login(String email, String password) async {
     emit(AuthLoading());
-    final result = await _loginUseCase(LoginParams(email: email, password: password));
+    final result =
+        await _loginUseCase(LoginParams(email: email, password: password));
     result.fold(
       (failure) {
         if (failure.message.toLowerCase().contains('email not confirmed')) {
@@ -74,7 +80,8 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  Future<void> verifyOtp(String email, String token, {bool isRecovery = false}) async {
+  Future<void> verifyOtp(String email, String token,
+      {bool isRecovery = false}) async {
     emit(AuthLoading());
     final result = await _verifyOtpUseCase(VerifyOtpParams(
       email: email,
@@ -111,6 +118,15 @@ class AuthCubit extends Cubit<AuthState> {
     result.fold(
       (failure) => emit(AuthError(failure.message)),
       (_) => emit(AuthPasswordResetSuccess()),
+    );
+  }
+
+  Future<void> logout() async {
+    emit(AuthLoading());
+    final result = await _logoutUseCase(const NoParams());
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (_) => emit(AuthInitial()), // Return to initial state (unauthenticated)
     );
   }
 }

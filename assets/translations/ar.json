@@ -74,7 +74,38 @@
     "navbar": {
         "home": "الرئيسية",
         "categories": "الأقسام",
-        "orders": "الطلبات",
+        "cart": "السلة",
         "profile": "حسابي"
+    },
+    "categories": {
+        "title": "جميع الأقسام",
+        "fashion": "الموضة",
+        "electronics": "الإلكترونيات",
+        "laptops": "اللابتوب",
+        "headphones": "السماعات",
+        "smartphones": "الهواتف الذكية",
+        "tshirt": "تي شيرتات"
+    },
+    "profile": {
+        "title": "الحساب",
+        "notification": "الإشعارات",
+        "dark_mode": "الوضع الليلي",
+        "rate_app": "تقييم التطبيق",
+        "share_app": "مشاركة التطبيق",
+        "privacy_policy": "سياسة الخصوصية",
+        "terms_conditions": "الشروط والأحكام",
+        "cookies_policy": "سياسة الكوكيز",
+        "contact": "اتصل بنا",
+        "feedback": "الآراء والملاحظات",
+        "logout": "تسجيل الخروج",
+        "favorite": "المفضلة",
+        "cart": "السلة",
+        "orders": "الطلبات"
+    },
+    "dialog": {
+        "logout_title": "تسجيل الخروج",
+        "logout_message": "هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟",
+        "cancel": "إلغاء",
+        "confirm": "تسجيل الخروج"
     }
 }

@@ -2,25 +2,13 @@
 class Assets {
   Assets._();
   
-  /// Assets for imagesPngWelcomePage
-  /// assets/images/png/welcome_page.png
-  static const String imagesPngWelcomePage = "assets/images/png/welcome_page.png";
-
-  /// Assets for imagesPngFashionBanner
-  /// assets/images/png/fashion_banner.png
-  static const String imagesPngFashionBanner = "assets/images/png/fashion_banner.png";
-
   /// Assets for imagesPngElectronicsBanner
   /// assets/images/png/electronics_banner.png
   static const String imagesPngElectronicsBanner = "assets/images/png/electronics_banner.png";
 
-  /// Assets for imagesPngSaleBanner
-  /// assets/images/png/sale_banner.png
-  static const String imagesPngSaleBanner = "assets/images/png/sale_banner.png";
-
-  /// Assets for imagesPngMacbook
-  /// assets/images/png/macbook.png
-  static const String imagesPngMacbook = "assets/images/png/macbook.png";
+  /// Assets for imagesPngFashionBanner
+  /// assets/images/png/fashion_banner.png
+  static const String imagesPngFashionBanner = "assets/images/png/fashion_banner.png";
 
   /// Assets for imagesPngHeadphones
   /// assets/images/png/headphones.png
@@ -29,6 +17,22 @@ class Assets {
   /// Assets for imagesPngIphone
   /// assets/images/png/iphone.png
   static const String imagesPngIphone = "assets/images/png/iphone.png";
+
+  /// Assets for imagesPngMacbook
+  /// assets/images/png/macbook.png
+  static const String imagesPngMacbook = "assets/images/png/macbook.png";
+
+  /// Assets for imagesPngSaleBanner
+  /// assets/images/png/sale_banner.png
+  static const String imagesPngSaleBanner = "assets/images/png/sale_banner.png";
+
+  /// Assets for imagesPngTShirt
+  /// assets/images/png/t_shirt.png
+  static const String imagesPngTShirt = "assets/images/png/t_shirt.png";
+
+  /// Assets for imagesPngWelcomePage
+  /// assets/images/png/welcome_page.png
+  static const String imagesPngWelcomePage = "assets/images/png/welcome_page.png";
 
   /// Assets for imagesSvgBag
   /// assets/images/svg/bag.svg

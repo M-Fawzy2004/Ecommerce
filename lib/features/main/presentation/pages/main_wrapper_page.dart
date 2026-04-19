@@ -58,7 +58,7 @@ class MainWrapperPage extends StatelessWidget {
               _CustomNavItem(
                 icon: IconlyLight.bag,
                 selectedIcon: IconlyBold.bag,
-                label: 'navbar.orders'.tr(),
+                label: 'navbar.cart'.tr(),
                 isSelected: navigationShell.currentIndex == 2,
                 onTap: () => _onBranchTapped(2),
               ),

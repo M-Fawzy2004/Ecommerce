@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/features/auth/data/datasources/auth_remote_data_source_impl.dart';
+import 'package:ecommerce_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:ecommerce_app/features/auth/domain/usecases/send_password_reset_email_usecase.dart';
 import 'package:ecommerce_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -61,6 +62,7 @@ void _initAuthDependencies() {
   serviceLocator.registerLazySingleton(() => ResendOtpUseCase(serviceLocator()));
   serviceLocator.registerLazySingleton(() => ResetPasswordUseCase(serviceLocator()));
   serviceLocator.registerLazySingleton(() => SendPasswordResetEmailUseCase(serviceLocator()));
+  serviceLocator.registerLazySingleton(() => LogoutUseCase(serviceLocator()));
 
   // Cubit
   serviceLocator.registerFactory(
@@ -71,7 +73,7 @@ void _initAuthDependencies() {
       resendOtpUseCase: serviceLocator(),
       sendResetEmailUseCase: serviceLocator(),
       resetPasswordUseCase: serviceLocator(),
+      logoutUseCase: serviceLocator(),
     ),
   );
 }
-
