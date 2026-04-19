@@ -64,5 +64,10 @@
     },
     "general": {
         "double_back_exit": "Press back again to exit"
+    },
+    "home": {
+        "search_products": "Search products",
+        "hot_sales": "Hot sales",
+        "free_shipping": "Free shipping"
     }
 }

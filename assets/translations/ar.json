@@ -64,5 +64,10 @@
     },
     "general": {
         "double_back_exit": "اضغط مرة أخرى للخروج"
+    },
+    "home": {
+        "search_products": "البحث عن منتجات",
+        "hot_sales": "الأكثر مبيعاً",
+        "free_shipping": "شحن مجاني"
     }
 }

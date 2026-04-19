@@ -13,11 +13,12 @@ abstract class AppColors {
   static const Color secondaryDark = Color(0xFFCC4A1A);
 
   // ── Neutrals ──────────────────────────────────────────────────────────────
-  static const Color backgroundSoft = Color(0xFFF5F7FA);
+  static const Color backgroundSoft = Colors.white;
   static const Color backgroundDark = Color(0xFF0F1724);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color surfaceDark = Color(0xFF1A2537);
   static const Color divider = Color(0xFFE0E6F0);
+  static const Color gray = Color(0xFFF7F7F7);
 
   // ── Text ─────────────────────────────────────────────────────────────────
   static const Color textPrimary = Color(0xFF0F1724);
