@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,14 +23,53 @@ class MainWrapperPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true, // Crucial for floating effect
       body: navigationShell,
-      bottomNavigationBar: SafeArea(
+      bottomNavigationBar: Container(
+        height: 75.h,
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 20,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
-          child: _CustomFloatingNavBar(
-            currentIndex: navigationShell.currentIndex,
-            onTap: _onBranchTapped,
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _CustomNavItem(
+                icon: IconlyLight.home,
+                selectedIcon: IconlyBold.home,
+                label: 'navbar.home'.tr(),
+                isSelected: navigationShell.currentIndex == 0,
+                onTap: () => _onBranchTapped(0),
+              ),
+              _CustomNavItem(
+                icon: IconlyLight.category,
+                selectedIcon: IconlyBold.category,
+                label: 'navbar.categories'.tr(),
+                isSelected: navigationShell.currentIndex == 1,
+                onTap: () => _onBranchTapped(1),
+              ),
+              _CustomNavItem(
+                icon: IconlyLight.bag,
+                selectedIcon: IconlyBold.bag,
+                label: 'navbar.orders'.tr(),
+                isSelected: navigationShell.currentIndex == 2,
+                onTap: () => _onBranchTapped(2),
+              ),
+              _CustomNavItem(
+                icon: IconlyLight.profile,
+                selectedIcon: IconlyBold.profile,
+                label: 'navbar.profile'.tr(),
+                isSelected: navigationShell.currentIndex == 3,
+                onTap: () => _onBranchTapped(3),
+              ),
+            ],
           ),
         ),
       ),
@@ -37,71 +77,17 @@ class MainWrapperPage extends StatelessWidget {
   }
 }
 
-class _CustomFloatingNavBar extends StatelessWidget {
-  final int currentIndex;
-  final Function(int) onTap;
-
-  const _CustomFloatingNavBar(
-      {required this.currentIndex, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(55.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-            spreadRadius: 2,
-          ),
-        ],
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          _NavBarItem(
-            icon: IconlyLight.home,
-            selectedIcon: IconlyBold.home,
-            isSelected: currentIndex == 0,
-            onTap: () => onTap(0),
-          ),
-          _NavBarItem(
-            icon: IconlyLight.category,
-            selectedIcon: IconlyBold.category,
-            isSelected: currentIndex == 1,
-            onTap: () => onTap(1),
-          ),
-          _NavBarItem(
-            icon: IconlyLight.bag,
-            selectedIcon: IconlyBold.bag,
-            isSelected: currentIndex == 2,
-            onTap: () => onTap(2),
-          ),
-          _NavBarItem(
-            icon: IconlyLight.profile,
-            selectedIcon: IconlyBold.profile,
-            isSelected: currentIndex == 3,
-            onTap: () => onTap(3),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _NavBarItem extends StatelessWidget {
+class _CustomNavItem extends StatelessWidget {
   final IconData icon;
   final IconData selectedIcon;
+  final String label;
   final bool isSelected;
   final VoidCallback onTap;
 
-  const _NavBarItem({
+  const _CustomNavItem({
     required this.icon,
     required this.selectedIcon,
+    required this.label,
     required this.isSelected,
     required this.onTap,
   });
@@ -112,26 +98,39 @@ class _NavBarItem extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOutCubic,
-        padding: EdgeInsets.all(12.w),
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeInOut,
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
           color: isSelected
               ? AppColors.primary.withOpacity(0.12)
               : Colors.transparent,
-          shape: BoxShape.circle,
+          borderRadius: BorderRadius.circular(25.r),
         ),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: (child, animation) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-          child: Icon(
-            isSelected ? selectedIcon : icon,
-            key: ValueKey<bool>(isSelected),
-            color: isSelected ? AppColors.primary : AppColors.textSecondary,
-            size: 26.sp,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isSelected ? selectedIcon : icon,
+              color: isSelected ? AppColors.primary : AppColors.textSecondary,
+              size: 24.sp,
+            ),
+            if (isSelected) ...[
+              SizedBox(width: 8.w),
+              AnimatedOpacity(
+                duration: const Duration(milliseconds: 350),
+                opacity: isSelected ? 1 : 0,
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13.sp,
+                  ),
+                ),
+              ),
+            ],
+          ],
         ),
       ),
     );

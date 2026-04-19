@@ -68,6 +68,13 @@
     "home": {
         "search_products": "البحث عن منتجات",
         "hot_sales": "الأكثر مبيعاً",
+        "recently_viewed": "شوهد مؤخراً",
         "free_shipping": "شحن مجاني"
+    },
+    "navbar": {
+        "home": "الرئيسية",
+        "categories": "الأقسام",
+        "orders": "الطلبات",
+        "profile": "حسابي"
     }
 }

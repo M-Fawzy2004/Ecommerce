@@ -5,6 +5,7 @@ import '../widgets/home_search_bar.dart';
 import '../widgets/notification_button.dart';
 import '../widgets/home_banners.dart';
 import '../widgets/hot_sales_section.dart';
+import '../widgets/recently_viewed_section.dart';
 
 class HomePageBody extends StatelessWidget {
   const HomePageBody({super.key});
@@ -43,6 +44,12 @@ class HomePageBody extends StatelessWidget {
         ),
         const SliverToBoxAdapter(
           child: HotSalesSection(),
+        ),
+        SliverToBoxAdapter(
+          child: AppSpacing.h24,
+        ),
+        const SliverToBoxAdapter(
+          child: RecentlyViewedSection(),
         ),
         SliverToBoxAdapter(
           child: AppSpacing.h24,

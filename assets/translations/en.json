@@ -68,6 +68,13 @@
     "home": {
         "search_products": "Search products",
         "hot_sales": "Hot sales",
+        "recently_viewed": "Recently viewed",
         "free_shipping": "Free shipping"
+    },
+    "navbar": {
+        "home": "Home",
+        "categories": "Categories",
+        "orders": "Orders",
+        "profile": "Profile"
     }
 }

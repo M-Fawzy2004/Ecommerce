@@ -9,11 +9,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ProductCard extends StatelessWidget {
   final ProductEntity product;
   final VoidCallback onTap;
+  final double? width;
 
   const ProductCard({
     super.key,
     required this.product,
     required this.onTap,
+    this.width,
   });
 
   @override
@@ -21,7 +23,7 @@ class ProductCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 150.w,
+        width: width ?? 160.w,
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.grey.shade100),

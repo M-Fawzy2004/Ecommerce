@@ -26,6 +26,10 @@ class Assets {
   /// assets/images/png/headphones.png
   static const String imagesPngHeadphones = "assets/images/png/headphones.png";
 
+  /// Assets for imagesPngIphone
+  /// assets/images/png/iphone.png
+  static const String imagesPngIphone = "assets/images/png/iphone.png";
+
   /// Assets for imagesSvgBag
   /// assets/images/svg/bag.svg
   static const String imagesSvgBag = "assets/images/svg/bag.svg";
