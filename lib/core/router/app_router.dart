@@ -5,6 +5,7 @@ import 'package:ecommerce_app/features/auth/presentation/pages/verification_page
 import 'package:ecommerce_app/features/auth/presentation/pages/welcome_page.dart';
 import 'package:ecommerce_app/features/categories/presentation/pages/categories_page.dart';
 import 'package:ecommerce_app/features/categories/presentation/pages/category_products_page.dart';
+import 'package:ecommerce_app/features/home/domain/entities/product_entity.dart';
 import 'package:ecommerce_app/features/home/presentation/pages/home_page.dart';
 import 'package:ecommerce_app/features/main/presentation/pages/main_wrapper_page.dart';
 import 'package:ecommerce_app/features/onboarding/presentation/pages/onboarding_page.dart';
@@ -12,6 +13,7 @@ import 'package:ecommerce_app/features/orders/presentation/pages/orders_page.dar
 import 'package:ecommerce_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
+import '../../features/product_details/presentation/pages/product_details_page.dart';
 
 /// Centralized route management using GoRouter.
 abstract class AppRouter {
@@ -23,13 +25,14 @@ abstract class AppRouter {
   static const String signup = '/signup';
   static const String verification = '/verification';
   static const String forgotPassword = '/forgot-password';
-  
+
   static const String home = '/home';
   static const String categories = '/categories';
   static const String orders = '/orders';
   static const String profile = '/profile';
 
   static const String categoryProducts = '/category-products';
+  static const String productDetails = '/product-details';
 
   // ── Configuration ────────────────────────────────────────────────────────
   static final GoRouter router = GoRouter(
@@ -69,13 +72,22 @@ abstract class AppRouter {
       GoRoute(
         path: categoryProducts,
         builder: (context, state) {
-          final extra = state.extra as Map<String, String>? ?? {};
-          final categoryName = extra['name'] ?? 'Category';
-          final categoryKey = extra['key'] ?? '';
+          final extra = state.extra;
+          final String categoryName =
+              (extra is Map ? extra['name'] : null)?.toString() ?? 'Category';
+          final String categoryKey =
+              (extra is Map ? extra['key'] : null)?.toString() ?? '';
           return CategoryProductsPage(
             categoryName: categoryName,
             categoryKey: categoryKey,
           );
+        },
+      ),
+      GoRoute(
+        path: productDetails,
+        builder: (context, state) {
+          final product = state.extra as ProductEntity;
+          return ProductDetailsPage(product: product);
         },
       ),
       StatefulShellRoute.indexedStack(

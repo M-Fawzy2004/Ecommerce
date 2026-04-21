@@ -24,6 +24,11 @@ import '../../features/categories/domain/repositories/categories_repository.dart
 import '../../features/categories/domain/usecases/get_products_by_category_usecase.dart';
 import '../../features/categories/presentation/cubit/category_details_cubit.dart';
 import '../../features/categories/presentation/cubit/categories_cubit.dart';
+import '../../features/product_details/data/datasources/product_details_remote_data_source.dart';
+import '../../features/product_details/data/repositories/product_details_repository_impl.dart';
+import '../../features/product_details/domain/repositories/product_details_repository.dart';
+import '../../features/product_details/domain/usecases/get_product_details_usecase.dart';
+import '../../features/product_details/presentation/cubit/product_details_cubit.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -44,6 +49,36 @@ Future<void> initDependencies() async {
   _initOnboardingDependencies();
   _initAuthDependencies();
   _initCategoriesDependencies();
+  _initProductDetailsDependencies();
+}
+
+// ... existing code ...
+
+void _initProductDetailsDependencies() {
+  // Data Source
+  serviceLocator.registerLazySingleton<ProductDetailsRemoteDataSource>(
+    () => ProductDetailsRemoteDataSourceImpl(serviceLocator()),
+  );
+
+  // Repository
+  serviceLocator.registerLazySingleton<ProductDetailsRepository>(
+    () => ProductDetailsRepositoryImpl(
+      remoteDataSource: serviceLocator(),
+      networkInfo: serviceLocator(),
+    ),
+  );
+
+  // UseCase
+  serviceLocator.registerLazySingleton(
+    () => GetProductDetailsUseCase(serviceLocator()),
+  );
+
+  // Cubit
+  serviceLocator.registerFactory(
+    () => ProductDetailsCubit(
+      getProductDetailsUseCase: serviceLocator(),
+    ),
+  );
 }
 
 void _initOnboardingDependencies() {
