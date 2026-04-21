@@ -85,7 +85,9 @@
         "headphones": "Headphones",
         "smartphones": "Smartphones",
         "tshirt": "T-Shirts",
-        "empty": "No categories found"
+        "empty": "No categories found",
+        "no_products": "No Products Yet",
+        "no_products_desc": "We are currently updating our collection for this category."
     },
     "common": {
         "retry": "Retry"

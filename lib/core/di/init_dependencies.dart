@@ -3,6 +3,7 @@ import 'package:ecommerce_app/features/auth/data/datasources/auth_remote_data_so
 import 'package:ecommerce_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:ecommerce_app/features/auth/domain/usecases/send_password_reset_email_usecase.dart';
 import 'package:ecommerce_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:ecommerce_app/features/categories/domain/usecases/get_categories_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -20,7 +21,8 @@ import '../../features/categories/data/datasources/categories_remote_data_source
 import '../../features/categories/data/datasources/categories_remote_data_source_impl.dart';
 import '../../features/categories/data/repositories/categories_repository_impl.dart';
 import '../../features/categories/domain/repositories/categories_repository.dart';
-import '../../features/categories/domain/usecases/get_categories_usecase.dart';
+import '../../features/categories/domain/usecases/get_products_by_category_usecase.dart';
+import '../../features/categories/presentation/cubit/category_details_cubit.dart';
 import '../../features/categories/presentation/cubit/categories_cubit.dart';
 
 final serviceLocator = GetIt.instance;
@@ -65,10 +67,14 @@ void _initAuthDependencies() {
   // Usecases
   serviceLocator.registerLazySingleton(() => SignUpUseCase(serviceLocator()));
   serviceLocator.registerLazySingleton(() => LoginUseCase(serviceLocator()));
-  serviceLocator.registerLazySingleton(() => VerifyOtpUseCase(serviceLocator()));
-  serviceLocator.registerLazySingleton(() => ResendOtpUseCase(serviceLocator()));
-  serviceLocator.registerLazySingleton(() => ResetPasswordUseCase(serviceLocator()));
-  serviceLocator.registerLazySingleton(() => SendPasswordResetEmailUseCase(serviceLocator()));
+  serviceLocator
+      .registerLazySingleton(() => VerifyOtpUseCase(serviceLocator()));
+  serviceLocator
+      .registerLazySingleton(() => ResendOtpUseCase(serviceLocator()));
+  serviceLocator
+      .registerLazySingleton(() => ResetPasswordUseCase(serviceLocator()));
+  serviceLocator.registerLazySingleton(
+      () => SendPasswordResetEmailUseCase(serviceLocator()));
   serviceLocator.registerLazySingleton(() => LogoutUseCase(serviceLocator()));
 
   // Cubit
@@ -100,12 +106,20 @@ void _initCategoriesDependencies() {
   );
 
   // Usecases
-  serviceLocator.registerLazySingleton(() => GetCategoriesUseCase(serviceLocator()));
+  serviceLocator
+      .registerLazySingleton(() => GetCategoriesUseCase(serviceLocator()));
+  serviceLocator.registerLazySingleton(
+      () => GetProductsByCategoryUseCase(serviceLocator()));
 
   // Cubit
   serviceLocator.registerFactory(
     () => CategoriesCubit(
       getCategoriesUseCase: serviceLocator(),
+    ),
+  );
+  serviceLocator.registerFactory(
+    () => CategoryDetailsCubit(
+      getProductsByCategoryUseCase: serviceLocator(),
     ),
   );
 }

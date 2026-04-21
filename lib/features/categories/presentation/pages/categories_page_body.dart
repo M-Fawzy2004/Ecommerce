@@ -120,7 +120,10 @@ class CategoriesPageBody extends StatelessWidget {
                             : () {
                                 context.push(
                                   AppRouter.categoryProducts,
-                                  extra: category.name,
+                                  extra: {
+                                    'name': category.name,
+                                    'key': category.key,
+                                  },
                                 );
                               },
                       );

@@ -69,8 +69,13 @@ abstract class AppRouter {
       GoRoute(
         path: categoryProducts,
         builder: (context, state) {
-          final categoryName = state.extra as String? ?? 'Category';
-          return CategoryProductsPage(categoryName: categoryName);
+          final extra = state.extra as Map<String, String>? ?? {};
+          final categoryName = extra['name'] ?? 'Category';
+          final categoryKey = extra['key'] ?? '';
+          return CategoryProductsPage(
+            categoryName: categoryName,
+            categoryKey: categoryKey,
+          );
         },
       ),
       StatefulShellRoute.indexedStack(
