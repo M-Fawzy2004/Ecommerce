@@ -88,6 +88,7 @@ class _ProfilePageBodyState extends State<ProfilePageBody> {
               final confirm = await AppDialogs.showLogoutDialog(context);
               if (confirm != true) return;
               if (!mounted) return;
+              // ignore: use_build_context_synchronously
               context.read<AuthCubit>().logout();
             },
             isDestructive: true,

@@ -84,7 +84,11 @@
         "laptops": "Laptops",
         "headphones": "Headphones",
         "smartphones": "Smartphones",
-        "tshirt": "T-Shirts"
+        "tshirt": "T-Shirts",
+        "empty": "No categories found"
+    },
+    "common": {
+        "retry": "Retry"
     },
     "profile": {
         "title": "Profile",

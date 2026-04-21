@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/core/network/api_client.dart';
 import 'package:ecommerce_app/features/auth/data/datasources/auth_remote_data_source_impl.dart';
 import 'package:ecommerce_app/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:ecommerce_app/features/auth/domain/usecases/send_password_reset_email_usecase.dart';
@@ -14,8 +15,13 @@ import '../../features/auth/domain/usecases/reset_password_usecase.dart';
 import '../../features/auth/domain/usecases/signup_usecase.dart';
 import '../../features/auth/domain/usecases/verify_otp_usecase.dart';
 import '../../features/onboarding/presentation/cubit/onboarding_cubit.dart';
-import '../network/api_client.dart';
 import '../network/network_info.dart';
+import '../../features/categories/data/datasources/categories_remote_data_source.dart';
+import '../../features/categories/data/datasources/categories_remote_data_source_impl.dart';
+import '../../features/categories/data/repositories/categories_repository_impl.dart';
+import '../../features/categories/domain/repositories/categories_repository.dart';
+import '../../features/categories/domain/usecases/get_categories_usecase.dart';
+import '../../features/categories/presentation/cubit/categories_cubit.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -35,6 +41,7 @@ Future<void> initDependencies() async {
   // ── Features ──────────────────────────────────────────────────────────────
   _initOnboardingDependencies();
   _initAuthDependencies();
+  _initCategoriesDependencies();
 }
 
 void _initOnboardingDependencies() {
@@ -74,6 +81,31 @@ void _initAuthDependencies() {
       sendResetEmailUseCase: serviceLocator(),
       resetPasswordUseCase: serviceLocator(),
       logoutUseCase: serviceLocator(),
+    ),
+  );
+}
+
+void _initCategoriesDependencies() {
+  // Data Source
+  serviceLocator.registerLazySingleton<CategoriesRemoteDataSource>(
+    () => CategoriesRemoteDataSourceImpl(serviceLocator()),
+  );
+
+  // Repository
+  serviceLocator.registerLazySingleton<CategoriesRepository>(
+    () => CategoriesRepositoryImpl(
+      remoteDataSource: serviceLocator(),
+      networkInfo: serviceLocator(),
+    ),
+  );
+
+  // Usecases
+  serviceLocator.registerLazySingleton(() => GetCategoriesUseCase(serviceLocator()));
+
+  // Cubit
+  serviceLocator.registerFactory(
+    () => CategoriesCubit(
+      getCategoriesUseCase: serviceLocator(),
     ),
   );
 }
