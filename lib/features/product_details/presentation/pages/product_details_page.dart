@@ -8,18 +8,19 @@ import 'package:ecommerce_app/features/product_details/presentation/cubit/produc
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import '../widgets/product_details_body.dart';
+import 'product_details_page_body.dart';
 import '../widgets/product_bottom_bar.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final ProductEntity product;
-  
+
   const ProductDetailsPage({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => serviceLocator<ProductDetailsCubit>()..getProductDetails(product.id),
+      create: (context) =>
+          serviceLocator<ProductDetailsCubit>()..getProductDetails(product.id),
       child: BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
         builder: (context, state) {
           if (state is ProductDetailsError) {
@@ -28,12 +29,18 @@ class ProductDetailsPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline, color: AppColors.error, size: 64),
+                    const Icon(
+                      Icons.error_outline,
+                      color: AppColors.error,
+                      size: 64,
+                    ),
                     AppSpacing.h16,
                     Text(state.message, style: AppTextStyles.bodyLarge),
                     AppSpacing.h8,
                     TextButton(
-                      onPressed: () => context.read<ProductDetailsCubit>().getProductDetails(product.id),
+                      onPressed: () => context
+                          .read<ProductDetailsCubit>()
+                          .getProductDetails(product.id),
                       child: const Text('Retry'),
                     ),
                   ],
@@ -42,28 +49,30 @@ class ProductDetailsPage extends StatelessWidget {
             );
           }
 
-          final bool isLoading = state is ProductDetailsLoading || state is ProductDetailsInitial;
-          final detailsProduct = state is ProductDetailsLoaded ? state.product : null;
+          final bool isLoading =
+              state is ProductDetailsLoading || state is ProductDetailsInitial;
+          final detailsProduct =
+              state is ProductDetailsLoaded ? state.product : null;
 
           return Scaffold(
             body: SafeArea(
               child: Skeletonizer(
                 enabled: isLoading,
-                child: detailsProduct == null 
-                  ? const Center(child: CircularProgressIndicator()) 
-                  : ProductDetailsBody(product: detailsProduct),
+                child: detailsProduct == null
+                    ? const Center(child: CircularProgressIndicator())
+                    : ProductDetailsPageBody(product: detailsProduct),
               ),
             ),
-            bottomNavigationBar: detailsProduct == null 
-              ? null 
-              : ProductBottomBar(
-                  price: detailsProduct.price,
-                  onAddToCart: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Added to Cart!')),
-                    );
-                  },
-                ),
+            bottomNavigationBar: detailsProduct == null
+                ? null
+                : ProductBottomBar(
+                    price: detailsProduct.price,
+                    onAddToCart: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Added to Cart!')),
+                      );
+                    },
+                  ),
           );
         },
       ),

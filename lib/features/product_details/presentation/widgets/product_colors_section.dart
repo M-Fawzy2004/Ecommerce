@@ -1,5 +1,4 @@
 import 'package:ecommerce_app/core/theme/app_colors.dart';
-import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
 import 'package:ecommerce_app/features/product_details/domain/entities/product_details_entity.dart';
 import 'package:flutter/material.dart';
@@ -37,20 +36,12 @@ class _ProductColorsSectionState extends State<ProductColorsSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Color',
-          style: AppTextStyles.bodyLarge.copyWith(
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        AppSpacing.h16,
         SizedBox(
-          height: 50.h,
+          height: 45.h,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: widget.colors.length,
-            separatorBuilder: (context, index) => AppSpacing.w20,
+            separatorBuilder: (context, index) => AppSpacing.w16,
             itemBuilder: (context, index) {
               final colorItem = widget.colors[index];
               final isSelected = _selectedColorIndex == index;
@@ -60,21 +51,33 @@ class _ProductColorsSectionState extends State<ProductColorsSection> {
                   setState(() => _selectedColorIndex = index);
                   widget.onColorSelected(index);
                 },
-                child: Container(
-                  width: 45.w,
-                  height: 45.h,
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 400),
+                  width: 44.w,
+                  height: 44.h,
                   decoration: BoxDecoration(
                     color: colorItem.color,
                     shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 4,
-                      ),
-                    ],
+                    border: Border.all(
+                      color: isSelected ? AppColors.primary : AppColors.divider,
+                      width: isSelected ? 2.w : 1.w,
+                    ),
+                    boxShadow: isSelected
+                        ? [
+                            BoxShadow(
+                              color: AppColors.primary.withOpacity(0.2),
+                              blurRadius: 8,
+                              spreadRadius: 2,
+                            ),
+                          ]
+                        : null,
                   ),
                   child: isSelected
-                      ? const Icon(Icons.check, color: Colors.white, size: 24)
+                      ? Icon(
+                          Icons.check,
+                          color: _getContrastColor(colorItem.color),
+                          size: 20.sp,
+                        )
                       : null,
                 ),
               );
@@ -83,5 +86,9 @@ class _ProductColorsSectionState extends State<ProductColorsSection> {
         ),
       ],
     );
+  }
+
+  Color _getContrastColor(Color color) {
+    return color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
   }
 }

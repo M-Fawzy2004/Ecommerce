@@ -1,9 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
+import 'package:ecommerce_app/core/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
 class ProductBottomBar extends StatelessWidget {
   final double price;
@@ -17,15 +18,16 @@ class ProductBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currencyFormat = NumberFormat.currency(symbol: '\$', decimalDigits: 2);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
+      padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 16.h + ScreenUtil().bottomBarHeight),
       decoration: BoxDecoration(
-        color: AppColors.gray,
+        color: AppColors.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            offset: const Offset(0, -5),
-            blurRadius: 10,
+            color: AppColors.textPrimary.withOpacity(0.06),
+            offset: const Offset(0, -4),
+            blurRadius: 16,
           ),
         ],
       ),
@@ -38,17 +40,16 @@ class ProductBottomBar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Total Price',
-                  style: AppTextStyles.bodySmall.copyWith(
+                  "navbar.cart".tr(), // Or a generic 'Total'
+                  style: AppTextStyles.labelMedium.copyWith(
                     color: AppColors.textHint,
                   ),
                 ),
                 Text(
-                  '\$ ${NumberFormat("#,###").format(price)}',
-                  style: AppTextStyles.bodyLarge.copyWith(
-                    fontWeight: FontWeight.w900,
+                  currencyFormat.format(price),
+                  style: AppTextStyles.titleLarge.copyWith(
+                    fontWeight: FontWeight.w800,
                     color: AppColors.textPrimary,
-                    fontSize: 20.sp,
                   ),
                 ),
               ],
@@ -57,31 +58,9 @@ class ProductBottomBar extends StatelessWidget {
           AppSpacing.w16,
           Expanded(
             flex: 3,
-            child: ElevatedButton(
+            child: AppButton(
+              text: "product.add_to_cart".tr(),
               onPressed: onAddToCart,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(vertical: 16.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16.r),
-                ),
-                elevation: 0,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.shopping_cart_outlined, size: 20),
-                  AppSpacing.w8,
-                  Text(
-                    'Add to Cart',
-                    style: AppTextStyles.bodyLarge.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
             ),
           ),
         ],

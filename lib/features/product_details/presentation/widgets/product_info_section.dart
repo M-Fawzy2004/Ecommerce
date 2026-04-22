@@ -1,10 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
+import 'package:ecommerce_app/core/ui/app_radius.dart';
 import 'package:ecommerce_app/features/home/domain/entities/product_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 
 class ProductInfoSection extends StatelessWidget {
   final ProductEntity product;
@@ -28,122 +29,166 @@ class ProductInfoSection extends StatelessWidget {
         // Name and Quantity Row
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Text(
-                product.name,
-                style: AppTextStyles.headlineSmall.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
-                  fontSize: 22.sp,
-                ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            // Quantity Selector UI
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
-              decoration: BoxDecoration(
-                color: AppColors.gray.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(30.r),
-              ),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildQuantityBtn(
-                    Icons.remove,
-                    onTap: quantity > 1
-                        ? () => onQuantityChanged(quantity - 1)
-                        : null,
-                    isDisabled: quantity <= 1,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                    child: Text(
-                      '$quantity',
-                      style: AppTextStyles.bodyLarge.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  Text(
+                    product.name,
+                    style: AppTextStyles.headlineMedium.copyWith(
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.textPrimary,
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  _buildQuantityBtn(
-                    Icons.add,
-                    onTap: quantity < maxQuantity
-                        ? () => onQuantityChanged(quantity + 1)
-                        : null,
-                    isDisabled: quantity >= maxQuantity,
-                  ),
+                  AppSpacing.h4,
+                  _buildRatingAndStock(),
                 ],
               ),
             ),
+            AppSpacing.w16,
+            _buildQuantitySelector(),
           ],
         ),
-
-        AppSpacing.h8,
-
-        // Rating and Stock Status Row
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            // Rating
-            Row(
-              children: [
-                Icon(Icons.star_rounded, color: Colors.amber, size: 20.sp),
-                AppSpacing.w4,
-                Text(
-                  '${product.rating ?? 0.0}',
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                AppSpacing.w4,
-                Text(
-                  '(${product.reviewCount ?? 0} Review)',
-                  style: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textHint,
-                  ),
-                ),
-              ],
-            ),
-            // Stock status
-            Text(
-              'Available in stock',
-              style: AppTextStyles.bodySmall.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ],
-        ),
-
-        AppSpacing.h16,
-
+        AppSpacing.h12,
         // Price Row
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              '\$ ${NumberFormat("#,###").format(product.price)}',
-              style: AppTextStyles.headlineSmall.copyWith(
-                fontWeight: FontWeight.w900,
-                color: AppColors.primary,
-                fontSize: 24.sp,
-              ),
-            ),
-            if (product.oldPrice != null) ...[
-              AppSpacing.w12,
-              Text(
-                '\$ ${NumberFormat("#,###").format(product.oldPrice)}',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.textHint,
-                  decoration: TextDecoration.lineThrough,
-                  fontSize: 16.sp,
-                ),
-              ),
-            ],
-          ],
+        _buildPriceSection(),
+      ],
+    );
+  }
+
+  Widget _buildRatingAndStock() {
+    return Row(
+      children: [
+        Icon(Icons.star_rounded, color: AppColors.star, size: 20.sp),
+        AppSpacing.w4,
+        Text(
+          '${product.rating ?? 0.0}',
+          style: AppTextStyles.titleMedium.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        AppSpacing.w4,
+        Text(
+          '(${product.reviewCount ?? 0} ${"product.reviews_count".tr()})',
+          style: AppTextStyles.bodySmall.copyWith(
+            color: AppColors.textHint,
+          ),
+        ),
+        AppSpacing.w8,
+        Container(
+          width: 4.w,
+          height: 4.h,
+          decoration: const BoxDecoration(
+            color: AppColors.divider,
+            shape: BoxShape.circle,
+          ),
+        ),
+        AppSpacing.w8,
+        Text(
+          "product.available_in_stock".tr(),
+          style: AppTextStyles.labelSmall.copyWith(
+            fontWeight: FontWeight.bold,
+            color: AppColors.success,
+          ),
         ),
       ],
+    );
+  }
+
+  Widget _buildPriceSection() {
+    final currencyFormat = NumberFormat.currency(
+      symbol: '\$',
+      decimalDigits: 0,
+    );
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          currencyFormat.format(product.price),
+          style: AppTextStyles.displayMedium.copyWith(
+            fontWeight: FontWeight.w800,
+            color: AppColors.primary,
+          ),
+        ),
+        if (product.oldPrice != null) ...[
+          AppSpacing.w12,
+          Padding(
+            padding: EdgeInsets.only(bottom: 6.h),
+            child: Text(
+              currencyFormat.format(product.oldPrice),
+              style: AppTextStyles.titleMedium.copyWith(
+                color: AppColors.textHint,
+                decoration: TextDecoration.lineThrough,
+                decorationColor: AppColors.textHint,
+                decorationThickness: 1.5,
+              ),
+            ),
+          ),
+          AppSpacing.w12,
+          _buildDiscountBadge(),
+        ],
+      ],
+    );
+  }
+
+  Widget _buildDiscountBadge() {
+    if (product.oldPrice == null || product.oldPrice! <= product.price) {
+      return const SizedBox.shrink();
+    }
+    final discount =
+        ((product.oldPrice! - product.price) / product.oldPrice! * 100).round();
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      decoration: BoxDecoration(
+        color: AppColors.error.withOpacity(0.1),
+        borderRadius: AppRadius.r8,
+      ),
+      child: Text(
+        '+$discount%',
+        style: AppTextStyles.labelMedium.copyWith(
+          color: AppColors.error,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuantitySelector() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.h),
+      decoration: BoxDecoration(
+        color: AppColors.gray,
+        borderRadius: AppRadius.r24,
+      ),
+      child: Row(
+        children: [
+          _buildQuantityBtn(
+            Icons.remove,
+            onTap: quantity > 1 ? () => onQuantityChanged(quantity - 1) : null,
+            isDisabled: quantity <= 1,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.w),
+            child: Text(
+              '$quantity',
+              style: AppTextStyles.titleLarge.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          _buildQuantityBtn(
+            Icons.add,
+            onTap: quantity < maxQuantity
+                ? () => onQuantityChanged(quantity + 1)
+                : null,
+            isDisabled: quantity >= maxQuantity,
+          ),
+        ],
+      ),
     );
   }
 
@@ -151,15 +196,26 @@ class ProductInfoSection extends StatelessWidget {
       {VoidCallback? onTap, bool isDisabled = false}) {
     return GestureDetector(
       onTap: onTap,
-      child: Opacity(
-        opacity: isDisabled ? 0.3 : 1.0,
-        child: Container(
-          padding: EdgeInsets.all(4.r),
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, size: 16.sp, color: AppColors.textPrimary),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: EdgeInsets.all(6.r),
+        decoration: BoxDecoration(
+          color: isDisabled ? AppColors.transparent : AppColors.surface,
+          shape: BoxShape.circle,
+          boxShadow: isDisabled
+              ? null
+              : [
+                  BoxShadow(
+                    color: AppColors.textPrimary.withOpacity(0.05),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+        ),
+        child: Icon(
+          icon,
+          size: 18.sp,
+          color: isDisabled ? AppColors.textHint : AppColors.textPrimary,
         ),
       ),
     );

@@ -113,5 +113,25 @@
         "logout_message": "هل أنت متأكد من رغبتك في تسجيل الخروج من حسابك؟",
         "cancel": "إلغاء",
         "confirm": "تسجيل الخروج"
+    },
+    "product": {
+        "reviews": "المراجعات",
+        "write_review": "اكتب مراجعة",
+        "available_in_stock": "متوفر في المخزون",
+        "color": "اللون",
+        "description": "الوصف",
+        "specifications": "المواصفات",
+        "add_to_cart": "إضافة إلى السلة",
+        "buy_now": "شراء الآن",
+        "show_more": "عرض المزيد",
+        "show_less": "عرض أقل",
+        "review": "مراجعة",
+        "reviews_count": "مراجعات",
+        "share_thoughts": "شارك رأيك مع العملاء الآخرين...",
+        "rate_product": "قيم هذا المنتج:",
+        "weight": "الوزن",
+        "length": "الطول",
+        "width": "العرض",
+        "height": "الارتفاع"
     }
 }

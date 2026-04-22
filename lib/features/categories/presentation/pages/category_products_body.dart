@@ -2,6 +2,7 @@ import 'package:ecommerce_app/core/router/app_router.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
+import 'package:ecommerce_app/core/widgets/app_back_button.dart';
 import 'package:ecommerce_app/features/categories/presentation/widgets/category_product_item.dart';
 import 'package:ecommerce_app/features/home/domain/entities/product_entity.dart';
 import 'package:ecommerce_app/features/categories/presentation/cubit/category_details_cubit.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconly/iconly.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -76,8 +78,11 @@ class _CategoryProductsBodyState extends State<CategoryProductsBody> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline,
-                    color: AppColors.error, size: 64),
+                const Icon(
+                  Icons.error_outline,
+                  color: AppColors.error,
+                  size: 64,
+                ),
                 AppSpacing.h16,
                 Text(state.message, style: AppTextStyles.bodyLarge),
                 AppSpacing.h8,
@@ -109,27 +114,25 @@ class _CategoryProductsBodyState extends State<CategoryProductsBody> {
                 : const AlwaysScrollableScrollPhysics(),
             slivers: [
               // App Bar / Header
-              SliverAppBar(
-                floating: true,
-                pinned: true,
-                elevation: 0,
-                backgroundColor: AppColors.backgroundSoft,
-                surfaceTintColor: Colors.transparent,
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: AppColors.textPrimary,
+              SliverPadding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                sliver: SliverAppBar(
+                  floating: true,
+                  pinned: true,
+                  leadingWidth: 45.w,
+                  elevation: 0,
+                  backgroundColor: AppColors.backgroundSoft,
+                  surfaceTintColor: Colors.transparent,
+                  leading: const AppBackButton(),
+                  title: Text(
+                    widget.categoryName,
+                    style: AppTextStyles.headlineSmall.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
-                  onPressed: () => Navigator.pop(context),
+                  centerTitle: true,
                 ),
-                title: Text(
-                  widget.categoryName,
-                  style: AppTextStyles.headlineSmall.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                centerTitle: true,
               ),
 
               if (state is CategoryDetailsLoaded && products.isEmpty)
@@ -140,7 +143,7 @@ class _CategoryProductsBodyState extends State<CategoryProductsBody> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          Icons.shopping_bag_outlined,
+                          IconlyLight.bag,
                           size: 80.r,
                           color: AppColors.textHint.withOpacity(0.5),
                         ),

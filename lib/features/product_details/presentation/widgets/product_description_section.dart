@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
@@ -29,11 +30,13 @@ class _ProductDescriptionSectionState extends State<ProductDescriptionSection> {
       crossAxisAlignment:
           isRtl ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
-        Text(
-          'Description',
-          style: AppTextStyles.bodyLarge.copyWith(
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
+        Align(
+          alignment: isRtl ? Alignment.centerLeft : Alignment.centerRight,
+          child: Text(
+            "product.description".tr(),
+            style: AppTextStyles.titleLarge.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         AppSpacing.h12,
@@ -57,7 +60,7 @@ class _ProductDescriptionSectionState extends State<ProductDescriptionSection> {
                           ? '${widget.description!.substring(0, 150)}...'
                           : widget.description!,
                       style: AppTextStyles.bodyMedium.copyWith(
-                        color: AppColors.textHint,
+                        color: AppColors.textSecondary,
                         height: 1.6,
                       ),
                     ),
@@ -68,8 +71,8 @@ class _ProductDescriptionSectionState extends State<ProductDescriptionSection> {
                           onTap: () =>
                               setState(() => _isExpanded = !_isExpanded),
                           child: Text(
-                            _isExpanded ? ' Show Less' : ' Read More',
-                            style: AppTextStyles.bodyMedium.copyWith(
+                            " ${_isExpanded ? "product.show_less".tr() : "product.show_more".tr()}",
+                            style: AppTextStyles.labelLarge.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.bold,
                             ),

@@ -14,8 +14,7 @@ class AppBackButton extends StatelessWidget {
     final bool canPop = context.canPop();
     if (!canPop && onPressed == null) return const SizedBox.shrink();
     return GestureDetector(
-      onTap:
-          onPressed ??
+      onTap: onPressed ??
           () {
             if (canPop) {
               context.pop();
@@ -28,7 +27,7 @@ class AppBackButton extends StatelessWidget {
         width: 45.w,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: AppColors.surface,
+          color: AppColors.gray,
           border: Border.all(color: AppColors.divider, width: 1.w),
         ),
         child: Center(

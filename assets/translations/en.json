@@ -113,5 +113,25 @@
         "logout_message": "Are you sure you want to log out from your account?",
         "cancel": "Cancel",
         "confirm": "Logout"
+    },
+    "product": {
+        "reviews": "Reviews",
+        "write_review": "Write a review",
+        "available_in_stock": "Available in stock",
+        "color": "Color",
+        "description": "Description",
+        "specifications": "Specifications",
+        "add_to_cart": "Add to Cart",
+        "buy_now": "Buy Now",
+        "show_more": "Show More",
+        "show_less": "Show Less",
+        "review": "Review",
+        "reviews_count": "Reviews",
+        "share_thoughts": "Share your thoughts with other customers...",
+        "rate_product": "Rate this product:",
+        "weight": "Weight",
+        "length": "Length",
+        "width": "Width",
+        "height": "Height"
     }
 }
