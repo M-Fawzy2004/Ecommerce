@@ -4,7 +4,10 @@ import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
 import 'package:ecommerce_app/core/ui/app_radius.dart';
 import 'package:ecommerce_app/features/home/domain/entities/product_entity.dart';
+import 'package:ecommerce_app/features/product_details/presentation/cubit/reviews_cubit.dart';
+import 'package:ecommerce_app/features/product_details/presentation/cubit/reviews_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductInfoSection extends StatelessWidget {
@@ -45,7 +48,7 @@ class ProductInfoSection extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   AppSpacing.h4,
-                  _buildRatingAndStock(),
+                  _buildRatingAndStock(context),
                 ],
               ),
             ),
@@ -60,42 +63,54 @@ class ProductInfoSection extends StatelessWidget {
     );
   }
 
-  Widget _buildRatingAndStock() {
-    return Row(
-      children: [
-        Icon(Icons.star_rounded, color: AppColors.star, size: 20.sp),
-        AppSpacing.w4,
-        Text(
-          '${product.rating ?? 0.0}',
-          style: AppTextStyles.titleMedium.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        AppSpacing.w4,
-        Text(
-          '(${product.reviewCount ?? 0} ${"product.reviews_count".tr()})',
-          style: AppTextStyles.bodySmall.copyWith(
-            color: AppColors.textHint,
-          ),
-        ),
-        AppSpacing.w8,
-        Container(
-          width: 4.w,
-          height: 4.h,
-          decoration: const BoxDecoration(
-            color: AppColors.divider,
-            shape: BoxShape.circle,
-          ),
-        ),
-        AppSpacing.w8,
-        Text(
-          "product.available_in_stock".tr(),
-          style: AppTextStyles.labelSmall.copyWith(
-            fontWeight: FontWeight.bold,
-            color: AppColors.success,
-          ),
-        ),
-      ],
+  Widget _buildRatingAndStock(BuildContext context) {
+    return BlocBuilder<ReviewsCubit, ReviewsState>(
+      builder: (context, state) {
+        double rating = product.rating ?? 0.0;
+        int reviewCount = product.reviewCount ?? 0;
+
+        if (state is ReviewsLoaded) {
+          rating = state.summary.averageRating;
+          reviewCount = state.summary.totalReviews;
+        }
+
+        return Row(
+          children: [
+            Icon(Icons.star_rounded, color: AppColors.star, size: 20.sp),
+            AppSpacing.w4,
+            Text(
+              rating.toStringAsFixed(1),
+              style: AppTextStyles.titleMedium.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            AppSpacing.w4,
+            Text(
+              '($reviewCount ${"product.reviews_count".tr()})',
+              style: AppTextStyles.bodySmall.copyWith(
+                color: AppColors.textHint,
+              ),
+            ),
+            AppSpacing.w8,
+            Container(
+              width: 4.w,
+              height: 4.h,
+              decoration: const BoxDecoration(
+                color: AppColors.divider,
+                shape: BoxShape.circle,
+              ),
+            ),
+            AppSpacing.w8,
+            Text(
+              "product.available_in_stock".tr(),
+              style: AppTextStyles.labelSmall.copyWith(
+                fontWeight: FontWeight.bold,
+                color: AppColors.success,
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 

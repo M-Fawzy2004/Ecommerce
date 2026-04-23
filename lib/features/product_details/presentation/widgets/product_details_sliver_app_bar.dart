@@ -10,26 +10,26 @@ import 'package:ecommerce_app/features/product_details/presentation/widgets/prod
 class ProductDetailsSliverAppBar extends StatelessWidget {
   final List<String> images;
 
-  const ProductDetailsSliverAppBar({
-    super.key,
-    required this.images,
-  });
+  const ProductDetailsSliverAppBar({super.key, required this.images});
 
-  Widget _buildIconButton(IconData icon) {
-    return SizedBox(
-      height: 45.h,
-      width: 45.w,
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: AppColors.gray,
-          border: Border.all(color: AppColors.divider, width: 1.w),
-        ),
-        child: Center(
-          child: Icon(
-            icon,
-            color: AppColors.textPrimary,
-            size: 18.sp,
+  Widget _buildIconButton(IconData icon, BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        if (icon == IconlyLight.arrow_left_2) {
+          Navigator.pop(context);
+        }
+      },
+      child: SizedBox(
+        height: 45.h,
+        width: 45.w,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: AppColors.gray,
+            border: Border.all(color: AppColors.divider, width: 1.w),
+          ),
+          child: Center(
+            child: Icon(icon, color: AppColors.textPrimary, size: 18.sp),
           ),
         ),
       ),
@@ -42,11 +42,11 @@ class ProductDetailsSliverAppBar extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       sliver: SliverAppBar(
         leadingWidth: 45.w,
-        leading: _buildIconButton(IconlyLight.arrow_left_2),
+        leading: _buildIconButton(IconlyLight.arrow_left_2, context),
         actions: [
-          _buildIconButton(IconlyLight.heart),
+          _buildIconButton(IconlyLight.heart, context),
           AppSpacing.w8,
-          _buildIconButton(IconlyLight.send),
+          _buildIconButton(IconlyLight.send, context),
         ],
         backgroundColor: Colors.white,
         elevation: 0,
@@ -56,7 +56,7 @@ class ProductDetailsSliverAppBar extends StatelessWidget {
         flexibleSpace: FlexibleSpaceBar(
           background: Container(
             color: Colors.white,
-            padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight + 0.h),
+            padding: EdgeInsets.only(top: ScreenUtil().statusBarHeight + 60.h),
             child: ProductImageCarousel(images: images),
           ),
         ),

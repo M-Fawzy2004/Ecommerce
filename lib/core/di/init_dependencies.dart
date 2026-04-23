@@ -29,6 +29,11 @@ import '../../features/product_details/data/repositories/product_details_reposit
 import '../../features/product_details/domain/repositories/product_details_repository.dart';
 import '../../features/product_details/domain/usecases/get_product_details_usecase.dart';
 import '../../features/product_details/presentation/cubit/product_details_cubit.dart';
+import '../../features/product_details/data/datasources/reviews_remote_data_source.dart';
+import '../../features/product_details/data/repositories/reviews_repository_impl.dart';
+import '../../features/product_details/domain/repositories/reviews_repository.dart';
+import '../../features/product_details/domain/usecases/reviews_usecases.dart';
+import '../../features/product_details/presentation/cubit/reviews_cubit.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -50,6 +55,7 @@ Future<void> initDependencies() async {
   _initAuthDependencies();
   _initCategoriesDependencies();
   _initProductDetailsDependencies();
+  _initReviewsDependencies();
 }
 
 // ... existing code ...
@@ -155,6 +161,40 @@ void _initCategoriesDependencies() {
   serviceLocator.registerFactory(
     () => CategoryDetailsCubit(
       getProductsByCategoryUseCase: serviceLocator(),
+    ),
+  );
+}
+
+void _initReviewsDependencies() {
+  serviceLocator.registerLazySingleton<ReviewsRemoteDataSource>(
+    () => ReviewsRemoteDataSourceImpl(serviceLocator()),
+  );
+
+  serviceLocator.registerLazySingleton<ReviewsRepository>(
+    () => ReviewsRepositoryImpl(
+      remote: serviceLocator(),
+      network: serviceLocator(),
+    ),
+  );
+
+  serviceLocator
+      .registerLazySingleton(() => GetProductReviewsUseCase(serviceLocator()));
+  serviceLocator
+      .registerLazySingleton(() => GetRatingSummaryUseCase(serviceLocator()));
+  serviceLocator
+      .registerLazySingleton(() => GetMyReviewUseCase(serviceLocator()));
+  serviceLocator
+      .registerLazySingleton(() => AddReviewUseCase(serviceLocator()));
+  serviceLocator
+      .registerLazySingleton(() => DeleteReviewUseCase(serviceLocator()));
+
+  serviceLocator.registerFactory(
+    () => ReviewsCubit(
+      getReviews: serviceLocator(),
+      getSummary: serviceLocator(),
+      getMyReview: serviceLocator(),
+      addReview: serviceLocator(),
+      deleteReview: serviceLocator(),
     ),
   );
 }

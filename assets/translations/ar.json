@@ -132,6 +132,15 @@
         "weight": "الوزن",
         "length": "الطول",
         "width": "العرض",
-        "height": "الارتفاع"
+        "height": "الارتفاع",
+        "added_to_cart": "تمت إضافة المنتج للسلة!",
+        "select_rating": "يرجى اختيار تقييم بالنجوم.",
+        "comment_too_short": "يجب أن يكون التعليق 5 أحرف على الأقل.",
+        "submit_review": "إرسال المراجعة",
+        "load_more_reviews": "تحميل المزيد من المراجعات",
+        "show_less_reviews": "عرض أقل",
+        "no_reviews_yet": "لا توجد مراجعات بعد. كن الأول!",
+        "your_review": "مراجعتك",
+        "delete_review": "حذف المراجعة"
     }
 }

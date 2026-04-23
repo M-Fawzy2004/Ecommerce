@@ -76,7 +76,7 @@ class _ProductDetailsPageBodyState extends State<ProductDetailsPageBody> {
               _buildDivider(),
               ProductSpecificationsSection(product: widget.product),
               _buildDivider(),
-              const ProductReviewsSection(),
+              ProductReviewsSection(productId: widget.product.id),
               AppSpacing.h40, // Space for the bottom bar height
             ]),
           ),
