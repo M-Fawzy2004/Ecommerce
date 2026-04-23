@@ -4,6 +4,8 @@ import 'package:ecommerce_app/features/auth/domain/usecases/logout_usecase.dart'
 import 'package:ecommerce_app/features/auth/domain/usecases/send_password_reset_email_usecase.dart';
 import 'package:ecommerce_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:ecommerce_app/features/categories/domain/usecases/get_categories_usecase.dart';
+import 'package:ecommerce_app/features/home/data/datasources/recently_viewed_local_data_source.dart';
+import 'package:ecommerce_app/features/home/data/repositories/recently_viewed_repository_impl.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -36,9 +38,10 @@ import '../../features/product_details/domain/usecases/reviews_usecases.dart';
 import '../../features/product_details/presentation/cubit/reviews_cubit.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../features/home/data/datasources/recently_viewed_local_data_source.dart';
-import '../../features/home/data/repositories/recently_viewed_repository_impl.dart';
 import '../../features/home/presentation/cubit/recently_viewed_cubit.dart';
+import '../../features/home/data/datasources/home_remote_data_source.dart';
+import '../../features/home/data/repositories/home_repository_impl.dart';
+import '../../features/home/presentation/cubit/hot_sales_cubit.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -65,6 +68,7 @@ Future<void> initDependencies() async {
   _initProductDetailsDependencies();
   _initReviewsDependencies();
   _initRecentlyViewedDependencies();
+  _initHomeDependencies();
 }
 
 // ... existing code ...
@@ -221,3 +225,24 @@ void _initRecentlyViewedDependencies() {
     () => RecentlyViewedCubit(serviceLocator()),
   );
 }
+
+void _initHomeDependencies() {
+  // Data Source
+  serviceLocator.registerLazySingleton<HomeRemoteDataSource>(
+    () => HomeRemoteDataSourceImpl(serviceLocator()),
+  );
+
+  // Repository
+  serviceLocator.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(
+      remoteDataSource: serviceLocator(),
+      networkInfo: serviceLocator(),
+    ),
+  );
+
+  // Cubit
+  serviceLocator.registerFactory(
+    () => HotSalesCubit(serviceLocator()),
+  );
+}
+

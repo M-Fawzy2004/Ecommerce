@@ -32,7 +32,7 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
     try {
       final List<dynamic> response = await supabaseClient
           .from('products')
-          .select('*, product_rating_summary(average_rating, total_reviews)')
+          .select('*')
           .eq('category_id', categoryKey)
           .order('created_at', ascending: false)
           .range(from, to);
