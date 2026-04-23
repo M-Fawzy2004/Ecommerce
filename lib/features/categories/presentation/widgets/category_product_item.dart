@@ -67,16 +67,54 @@ class CategoryProductItem extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   AppSpacing.h4,
-                  if (product.description != null)
-                    Text(
-                      product.description!,
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondary,
-                        height: 1.3,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                  Row(
+                    children: [
+                      if (product.reviewCount != null &&
+                          product.reviewCount! > 0) ...[
+                        Text(
+                          (product.rating ?? 0.0).toStringAsFixed(1),
+                          style: AppTextStyles.labelSmall.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                            fontSize: 11.sp,
+                          ),
+                        ),
+                        AppSpacing.w4,
+                        Icon(
+                          Icons.star_rounded,
+                          size: 14.sp,
+                          color: const Color(0xFFFFC107),
+                        ),
+                        AppSpacing.w4,
+                        Text(
+                          '(${product.reviewCount})',
+                          style: AppTextStyles.labelSmall.copyWith(
+                            color: AppColors.textHint,
+                            fontSize: 10.sp,
+                          ),
+                        ),
+                      ] else ...[
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 2.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(4.r),
+                          ),
+                          child: Text(
+                            "New",
+                            style: TextStyle(
+                              color: AppColors.primary,
+                              fontSize: 9.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                   const Spacer(), // Pushes content to bottom
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,7 +145,9 @@ class CategoryProductItem extends StatelessWidget {
                       if (product.hasFreeShipping)
                         Container(
                           padding: EdgeInsets.symmetric(
-                              horizontal: 8.w, vertical: 4.h),
+                            horizontal: 8.w,
+                            vertical: 4.h,
+                          ),
                           decoration: BoxDecoration(
                             color: AppColors.success.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(6.r),
@@ -134,8 +174,11 @@ class CategoryProductItem extends StatelessWidget {
 
   Widget _buildProductImage() {
     if (product.image.isEmpty) {
-      return Icon(Icons.image_not_supported_outlined,
-          size: 30.r, color: AppColors.textSecondary);
+      return Icon(
+        Icons.image_not_supported_outlined,
+        size: 30.r,
+        color: AppColors.textSecondary,
+      );
     }
 
     if (product.image.startsWith('http')) {

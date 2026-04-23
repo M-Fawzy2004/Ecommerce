@@ -76,21 +76,45 @@ class ProductInfoSection extends StatelessWidget {
 
         return Row(
           children: [
-            Icon(Icons.star_rounded, color: AppColors.star, size: 20.sp),
-            AppSpacing.w4,
-            Text(
-              rating.toStringAsFixed(1),
-              style: AppTextStyles.titleMedium.copyWith(
-                fontWeight: FontWeight.bold,
+            if (reviewCount > 0) ...[
+              Icon(Icons.star_rounded, color: AppColors.star, size: 20.sp),
+              AppSpacing.w4,
+              Text(
+                rating.toStringAsFixed(1),
+                style: AppTextStyles.titleMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            AppSpacing.w4,
-            Text(
-              '($reviewCount ${"product.reviews_count".tr()})',
-              style: AppTextStyles.bodySmall.copyWith(
-                color: AppColors.textHint,
+              AppSpacing.w4,
+              Text(
+                '($reviewCount ${"product.reviews_count".tr()})',
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.textHint,
+                ),
               ),
-            ),
+            ] else ...[
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.1),
+                  borderRadius: AppRadius.r4,
+                ),
+                child: Text(
+                  "product.new_product".tr(),
+                  style: AppTextStyles.labelSmall.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              AppSpacing.w4,
+              Text(
+                "product.no_reviews".tr(),
+                style: AppTextStyles.labelSmall.copyWith(
+                  color: AppColors.textHint,
+                ),
+              ),
+            ],
             AppSpacing.w8,
             Container(
               width: 4.w,

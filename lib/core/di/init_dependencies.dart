@@ -35,10 +35,18 @@ import '../../features/product_details/domain/repositories/reviews_repository.da
 import '../../features/product_details/domain/usecases/reviews_usecases.dart';
 import '../../features/product_details/presentation/cubit/reviews_cubit.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../features/home/data/datasources/recently_viewed_local_data_source.dart';
+import '../../features/home/data/repositories/recently_viewed_repository_impl.dart';
+import '../../features/home/presentation/cubit/recently_viewed_cubit.dart';
+
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
   // ── Core / Network ────────────────────────────────────────────────────────
+  final sharedPrefs = await SharedPreferences.getInstance();
+  serviceLocator.registerLazySingleton(() => sharedPrefs);
+
   serviceLocator.registerLazySingleton(() => InternetConnection());
 
   serviceLocator.registerLazySingleton<NetworkInfo>(
@@ -56,6 +64,7 @@ Future<void> initDependencies() async {
   _initCategoriesDependencies();
   _initProductDetailsDependencies();
   _initReviewsDependencies();
+  _initRecentlyViewedDependencies();
 }
 
 // ... existing code ...
@@ -196,5 +205,19 @@ void _initReviewsDependencies() {
       addReview: serviceLocator(),
       deleteReview: serviceLocator(),
     ),
+  );
+}
+
+void _initRecentlyViewedDependencies() {
+  serviceLocator.registerLazySingleton<RecentlyViewedLocalDataSource>(
+    () => RecentlyViewedLocalDataSourceImpl(serviceLocator()),
+  );
+
+  serviceLocator.registerLazySingleton<RecentlyViewedRepository>(
+    () => RecentlyViewedRepositoryImpl(serviceLocator()),
+  );
+
+  serviceLocator.registerLazySingleton(
+    () => RecentlyViewedCubit(serviceLocator()),
   );
 }

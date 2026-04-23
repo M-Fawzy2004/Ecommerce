@@ -6,7 +6,8 @@ abstract class ProductDetailsRemoteDataSource {
   Future<ProductDetailsModel> getProductDetails(String productId);
 }
 
-class ProductDetailsRemoteDataSourceImpl implements ProductDetailsRemoteDataSource {
+class ProductDetailsRemoteDataSourceImpl
+    implements ProductDetailsRemoteDataSource {
   final SupabaseClient supabaseClient;
 
   ProductDetailsRemoteDataSourceImpl(this.supabaseClient);

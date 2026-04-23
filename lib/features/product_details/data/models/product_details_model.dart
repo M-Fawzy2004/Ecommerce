@@ -30,16 +30,23 @@ class ProductDetailsModel extends ProductDetailsEntity {
     final double? salePrice = (json['sale_price'] as num?)?.toDouble();
 
     // Map images from product_images join
-    final List<dynamic> imagesJson = json['product_images'] as List<dynamic>? ?? [];
-    List<String> images = imagesJson.map((img) => img['image_url'] as String).toList();
+    final List<dynamic> imagesJson =
+        json['product_images'] as List<dynamic>? ?? [];
+    List<String> images = imagesJson
+        .map((img) => img['image_url'] as String)
+        .toList();
     if (images.isEmpty && json['main_image_url'] != null) {
       images = [json['main_image_url'] as String];
     }
 
     // Map colors from product_color_stocks join
-    final List<dynamic> colorsJson = json['product_color_stocks'] as List<dynamic>? ?? [];
+    final List<dynamic> colorsJson =
+        json['product_color_stocks'] as List<dynamic>? ?? [];
     final List<ProductColorEntity> colors = colorsJson.map((c) {
-      final String hex = (c['color_hex'] as String? ?? '0xFF000000').replaceAll('#', '0xFF');
+      final String hex = (c['color_hex'] as String? ?? '0xFF000000').replaceAll(
+        '#',
+        '0xFF',
+      );
       return ProductColorEntity(
         name: c['color_name'] as String,
         color: Color(int.parse(hex)),

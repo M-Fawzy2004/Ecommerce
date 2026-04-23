@@ -8,6 +8,8 @@ import 'core/theme/app_theme.dart';
 import 'core/router/app_router.dart';
 import 'core/di/init_dependencies.dart';
 import 'core/config/env_vars.dart';
+import 'features/home/presentation/cubit/recently_viewed_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,19 +49,26 @@ class EcommerceApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          title: 'Ecommerce App',
-          theme: AppTheme.light,
-          scrollBehavior: const ScrollBehavior().copyWith(
-            physics: const BouncingScrollPhysics(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => serviceLocator<RecentlyViewedCubit>()..loadProducts(),
+            ),
+          ],
+          child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            title: 'Ecommerce App',
+            theme: AppTheme.light,
+            scrollBehavior: const ScrollBehavior().copyWith(
+              physics: const BouncingScrollPhysics(),
+            ),
+            // Localization
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            // Routing
+            routerConfig: AppRouter.router,
           ),
-          // Localization
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          // Routing
-          routerConfig: AppRouter.router,
         );
       },
     );

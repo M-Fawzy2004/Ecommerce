@@ -25,19 +25,32 @@ class CategoriesPageBody extends StatelessWidget {
   );
 
   static const Map<String, String> _fixedImages = {
-    'sports': 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=300',
-    'electronics': 'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&q=80&w=300',
-    'laptop': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&q=80&w=300',
-    'laptops': 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&q=80&w=300',
-    'fashion': 'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=300',
-    'womens_fashion': 'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=300',
-    'mens_fashion': 'https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&q=80&w=300',
-    'mobile': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=300',
-    'smartphones': 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=300',
-    'tablet': 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=300',
-    'appliances': 'https://images.unsplash.com/photo-1584622781564-1d9876a13d00?auto=format&fit=crop&q=80&w=300',
-    'headphones': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=300',
-    'tshirt': 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=300',
+    'sports':
+        'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=300',
+    'electronics':
+        'https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&q=80&w=300',
+    'laptop':
+        'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&q=80&w=300',
+    'laptops':
+        'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&q=80&w=300',
+    'fashion':
+        'https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=300',
+    'womens_fashion':
+        'https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=300',
+    'mens_fashion':
+        'https://images.unsplash.com/photo-1488161628813-04466f872be2?auto=format&fit=crop&q=80&w=300',
+    'mobile':
+        'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=300',
+    'smartphones':
+        'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&q=80&w=300',
+    'tablet':
+        'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=300',
+    'appliances':
+        'https://images.unsplash.com/photo-1584622781564-1d9876a13d00?auto=format&fit=crop&q=80&w=300',
+    'headphones':
+        'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=300',
+    'tshirt':
+        'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=300',
   };
 
   String? _mapCategoryToImage(String key) {
@@ -58,12 +71,17 @@ class CategoriesPageBody extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, color: AppColors.error, size: 48),
+                const Icon(
+                  Icons.error_outline,
+                  color: AppColors.error,
+                  size: 48,
+                ),
                 AppSpacing.h16,
                 Text(state.message, style: AppTextStyles.bodyLarge),
                 AppSpacing.h16,
                 TextButton(
-                  onPressed: () => context.read<CategoriesCubit>().getCategories(),
+                  onPressed: () =>
+                      context.read<CategoriesCubit>().getCategories(),
                   child: Text('common.retry'.tr()),
                 ),
               ],
@@ -72,7 +90,9 @@ class CategoriesPageBody extends StatelessWidget {
         }
 
         final bool isLoading = state is CategoriesLoading;
-        final list = state is CategoriesLoaded ? state.categories : _dummyCategories;
+        final list = state is CategoriesLoaded
+            ? state.categories
+            : _dummyCategories;
 
         if (state is CategoriesLoaded && list.isEmpty) {
           return Center(child: Text('categories.empty'.tr()));
@@ -81,7 +101,9 @@ class CategoriesPageBody extends StatelessWidget {
         return Skeletonizer(
           enabled: isLoading,
           child: CustomScrollView(
-            physics: isLoading ? const NeverScrollableScrollPhysics() : const BouncingScrollPhysics(),
+            physics: isLoading
+                ? const NeverScrollableScrollPhysics()
+                : const BouncingScrollPhysics(),
             slivers: [
               SliverPadding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
@@ -104,35 +126,33 @@ class CategoriesPageBody extends StatelessWidget {
                     crossAxisSpacing: 10.w,
                     childAspectRatio: 1,
                   ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final category = list[index];
-                      final categoryName = category.name.replaceAll('Home ', '');
-                      return CategoryCard(
-                        category: CategoryEntity(
-                          id: category.id,
-                          key: category.key,
-                          name: categoryName,
-                          image: category.image ?? _mapCategoryToImage(category.key),
-                        ),
-                        onTap: isLoading
-                            ? () {}
-                            : () {
-                                context.push(
-                                  AppRouter.categoryProducts,
-                                  extra: {
-                                    'name': category.name,
-                                    'key': category.key,
-                                  },
-                                );
-                              },
-                      );
-                    },
-                    childCount: list.length,
-                  ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final category = list[index];
+                    final categoryName = category.name.replaceAll('Home ', '');
+                    return CategoryCard(
+                      category: CategoryEntity(
+                        id: category.id,
+                        key: category.key,
+                        name: categoryName,
+                        image:
+                            category.image ?? _mapCategoryToImage(category.key),
+                      ),
+                      onTap: isLoading
+                          ? () {}
+                          : () {
+                              context.push(
+                                AppRouter.categoryProducts,
+                                extra: {
+                                  'name': category.name,
+                                  'key': category.key,
+                                },
+                              );
+                            },
+                    );
+                  }, childCount: list.length),
                 ),
               ),
-              SliverToBoxAdapter(child: AppSpacing.h80),
+              SliverToBoxAdapter(child: AppSpacing.h20),
             ],
           ),
         );
