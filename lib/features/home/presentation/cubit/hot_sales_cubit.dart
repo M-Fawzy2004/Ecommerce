@@ -22,8 +22,8 @@ class HotSalesCubit extends BaseCubit<HotSalesState> {
 
   HotSalesCubit(this.repository) : super(HotSalesInitial());
 
-  Future<void> getHotSales() async {
-    emit(HotSalesLoading());
+  Future<void> getHotSales({bool isRefresh = false}) async {
+    if (!isRefresh) emit(HotSalesLoading());
     final result = await repository.getHotSales(0, pageSize - 1);
     result.fold(
       (failure) => emit(HotSalesError(failure.message)),

@@ -12,8 +12,15 @@ import '../widgets/product_reviews_section.dart';
 
 class ProductDetailsPageBody extends StatefulWidget {
   final ProductDetailsEntity product;
+  final int initialQuantity;
+  final ValueChanged<int> onQuantityChanged;
 
-  const ProductDetailsPageBody({super.key, required this.product});
+  const ProductDetailsPageBody({
+    super.key,
+    required this.product,
+    required this.initialQuantity,
+    required this.onQuantityChanged,
+  });
 
   @override
   State<ProductDetailsPageBody> createState() => _ProductDetailsPageBodyState();
@@ -21,7 +28,21 @@ class ProductDetailsPageBody extends StatefulWidget {
 
 class _ProductDetailsPageBodyState extends State<ProductDetailsPageBody> {
   int _selectedColorIndex = 0;
-  int _quantity = 1;
+  late int _quantity;
+
+  @override
+  void initState() {
+    super.initState();
+    _quantity = widget.initialQuantity;
+  }
+
+  @override
+  void didUpdateWidget(covariant ProductDetailsPageBody oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialQuantity != widget.initialQuantity) {
+      _quantity = widget.initialQuantity;
+    }
+  }
 
   int _getMaxStock() {
     if (widget.product.colors.isEmpty) return 10;
@@ -34,7 +55,10 @@ class _ProductDetailsPageBodyState extends State<ProductDetailsPageBody> {
       _selectedColorIndex = index;
       // Reset quantity if it exceeds new max stock
       final maxStock = _getMaxStock();
-      if (_quantity > maxStock) _quantity = maxStock;
+      if (_quantity > maxStock) {
+        _quantity = maxStock;
+        widget.onQuantityChanged(_quantity);
+      }
     });
   }
 
@@ -42,6 +66,7 @@ class _ProductDetailsPageBodyState extends State<ProductDetailsPageBody> {
     setState(() {
       _quantity = newQuantity;
     });
+    widget.onQuantityChanged(newQuantity);
   }
 
   @override

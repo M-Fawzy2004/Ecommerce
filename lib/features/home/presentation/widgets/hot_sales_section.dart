@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/core/di/init_dependencies.dart';
 import 'package:ecommerce_app/core/router/app_router.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:ecommerce_app/core/theme/app_text_styles.dart';
@@ -44,29 +43,26 @@ class _HotSalesSectionState extends State<HotSalesSection> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => serviceLocator<HotSalesCubit>()..getHotSales(),
-      child: BlocBuilder<HotSalesCubit, HotSalesState>(
-        builder: (context, state) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Text(
-                  'home.hot_sales'.tr(),
-                  style: AppTextStyles.bodyLarge.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
+    return BlocBuilder<HotSalesCubit, HotSalesState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w),
+              child: Text(
+                'home.hot_sales'.tr(),
+                style: AppTextStyles.bodyLarge.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.textPrimary,
                 ),
               ),
-              AppSpacing.h12,
-              _buildContent(state),
-            ],
-          );
-        },
-      ),
+            ),
+            AppSpacing.h12,
+            _buildContent(state),
+          ],
+        );
+      },
     );
   }
 
@@ -77,9 +73,15 @@ class _HotSalesSectionState extends State<HotSalesSection> {
 
     if (state is HotSalesLoading) {
       isLoading = true;
-      products = List.generate(5, (index) => const ProductEntity(
-        id: '', name: 'Loading...', image: '', price: 0,
-      ));
+      products = List.generate(
+        5,
+        (index) => const ProductEntity(
+          id: '',
+          name: 'Loading...',
+          image: '',
+          price: 0,
+        ),
+      );
     } else if (state is HotSalesLoaded) {
       products = state.products;
       hasReachedMax = state.hasReachedMax;

@@ -17,10 +17,23 @@ import 'product_details_page_body.dart';
 import '../widgets/product_details_skeleton.dart';
 import '../widgets/product_bottom_bar.dart';
 
-class ProductDetailsPage extends StatelessWidget {
+class ProductDetailsPage extends StatefulWidget {
   final ProductEntity product;
 
   const ProductDetailsPage({super.key, required this.product});
+
+  @override
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
+}
+
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  int _quantity = 1;
+
+  void _onQuantityChanged(int quantity) {
+    setState(() {
+      _quantity = quantity;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +43,12 @@ class ProductDetailsPage extends StatelessWidget {
         BlocProvider(
           create: (_) =>
               serviceLocator<ProductDetailsCubit>()
-                ..getProductDetails(product.id),
+                ..getProductDetails(widget.product.id),
         ),
         BlocProvider(
           create: (_) =>
               serviceLocator<ReviewsCubit>()
-                ..loadReviews(product.id, userId: userId),
+                ..loadReviews(widget.product.id, userId: userId),
         ),
       ],
       child: MultiBlocListener(
@@ -83,7 +96,7 @@ class ProductDetailsPage extends StatelessWidget {
                       TextButton(
                         onPressed: () => context
                             .read<ProductDetailsCubit>()
-                            .getProductDetails(product.id),
+                            .getProductDetails(widget.product.id),
                         child: Text('common.retry'.tr()),
                       ),
                     ],
@@ -104,9 +117,13 @@ class ProductDetailsPage extends StatelessWidget {
 
             return Scaffold(
               backgroundColor: AppColors.surface,
-              body: ProductDetailsPageBody(product: detailsProduct),
+              body: ProductDetailsPageBody(
+                product: detailsProduct,
+                initialQuantity: _quantity,
+                onQuantityChanged: _onQuantityChanged,
+              ),
               bottomNavigationBar: ProductBottomBar(
-                price: detailsProduct.price,
+                price: detailsProduct.price * _quantity,
                 onAddToCart: () => AppToast.success(
                   context,
                   message: 'product.added_to_cart'.tr(),

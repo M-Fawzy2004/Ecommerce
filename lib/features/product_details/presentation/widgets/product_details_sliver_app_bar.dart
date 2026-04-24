@@ -21,9 +21,11 @@ class ProductDetailsSliverAppBar extends StatelessWidget {
     required BuildContext context,
     VoidCallback? onTap,
     Color? iconColor,
+    Color? iconBackgroundColor,
   }) {
     return GestureDetector(
-      onTap: onTap ??
+      onTap:
+          onTap ??
           () {
             if (icon == IconlyLight.arrow_left_2) {
               Navigator.pop(context);
@@ -35,7 +37,7 @@ class ProductDetailsSliverAppBar extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.gray,
+            color: iconBackgroundColor ?? AppColors.gray,
             border: Border.all(color: AppColors.divider, width: 1.w),
           ),
           child: Center(
@@ -63,12 +65,18 @@ class ProductDetailsSliverAppBar extends StatelessWidget {
         actions: [
           BlocBuilder<FavoritesCubit, FavoritesState>(
             builder: (context, state) {
-              final isFavorite = context.read<FavoritesCubit>().isFavorite(product.id);
+              final isFavorite = context.read<FavoritesCubit>().isFavorite(
+                product.id,
+              );
               return _buildIconButton(
                 icon: isFavorite ? IconlyBold.heart : IconlyLight.heart,
-                iconColor: isFavorite ? AppColors.error : null,
+                iconColor: isFavorite ? AppColors.primary : null,
                 context: context,
-                onTap: () => context.read<FavoritesCubit>().toggleFavorite(product),
+                iconBackgroundColor: isFavorite
+                    ? AppColors.primary.withOpacity(.15)
+                    : null,
+                onTap: () =>
+                    context.read<FavoritesCubit>().toggleFavorite(product),
               );
             },
           ),

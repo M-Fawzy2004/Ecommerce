@@ -130,7 +130,7 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
     if (url.startsWith('http')) {
       return CachedNetworkImage(
         imageUrl: url,
-        fit: isThumbnail ? BoxFit.cover : BoxFit.contain,
+        fit: BoxFit.contain,
         placeholder: (context, url) => Center(
           child: SizedBox(
             width: 20.w,
@@ -145,6 +145,6 @@ class _ProductImageCarouselState extends State<ProductImageCarousel> {
         ),
       );
     }
-    return Image.asset(url, fit: isThumbnail ? BoxFit.cover : BoxFit.contain);
+    return Image.asset(url, fit: BoxFit.contain);
   }
 }

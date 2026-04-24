@@ -6,38 +6,52 @@ import '../widgets/notification_button.dart';
 import '../widgets/home_banners.dart';
 import '../widgets/hot_sales_section.dart';
 import '../widgets/recently_viewed_section.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/hot_sales_cubit.dart';
+import '../cubit/recently_viewed_cubit.dart';
 
 class HomePageBody extends StatelessWidget {
   const HomePageBody({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverPadding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
-          sliver: SliverToBoxAdapter(
-            child: Row(
-              children: [
-                Expanded(child: HomeSearchBar(onTap: () {})),
-                AppSpacing.w16,
-                NotificationButton(
-                  onTap: () {},
-                  hasUnread: true, // Represents a new notification badge
-                ),
-              ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        await Future.wait([
+          context.read<HotSalesCubit>().getHotSales(isRefresh: true),
+          context.read<RecentlyViewedCubit>().loadProducts(),
+        ]);
+      },
+      child: CustomScrollView(
+        physics: const AlwaysScrollableScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
+        slivers: [
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 9.h),
+            sliver: SliverToBoxAdapter(
+              child: Row(
+                children: [
+                  Expanded(child: HomeSearchBar(onTap: () {})),
+                  AppSpacing.w16,
+                  NotificationButton(
+                    onTap: () {},
+                    hasUnread: true, // Represents a new notification badge
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        SliverToBoxAdapter(child: AppSpacing.h12),
-        const SliverToBoxAdapter(child: HomeBanners()),
-        SliverToBoxAdapter(child: AppSpacing.h24),
-        const SliverToBoxAdapter(child: HotSalesSection()),
-        SliverToBoxAdapter(child: AppSpacing.h24),
-        const SliverToBoxAdapter(child: RecentlyViewedSection()),
-        SliverToBoxAdapter(child: AppSpacing.h64),
-        // Future Slivers like Categories Grids, and Products Lists will be added here
-      ],
+          SliverToBoxAdapter(child: AppSpacing.h12),
+          const SliverToBoxAdapter(child: HomeBanners()),
+          SliverToBoxAdapter(child: AppSpacing.h24),
+          const SliverToBoxAdapter(child: HotSalesSection()),
+          SliverToBoxAdapter(child: AppSpacing.h24),
+          const SliverToBoxAdapter(child: RecentlyViewedSection()),
+          SliverToBoxAdapter(child: AppSpacing.h64),
+          // Future Slivers like Categories Grids, and Products Lists will be added here
+        ],
+      ),
     );
   }
 }
