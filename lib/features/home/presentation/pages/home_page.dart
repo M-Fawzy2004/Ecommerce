@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/core/widgets/double_back_to_exit_wrapper.dart';
+import 'package:ecommerce_app/features/home/presentation/cubit/recently_added_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce_app/core/di/init_dependencies.dart';
 import 'package:ecommerce_app/features/home/presentation/cubit/hot_sales_cubit.dart';
@@ -11,13 +12,17 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DoubleBackToExitWrapper(
-      child: BlocProvider(
-        create: (context) => serviceLocator<HotSalesCubit>()..getHotSales(),
-        child: const Scaffold(
-          body: SafeArea(
-            child: HomePageBody(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => serviceLocator<HotSalesCubit>()..getHotSales(),
           ),
-        ),
+          BlocProvider(
+            create: (context) =>
+                serviceLocator<RecentlyAddedCubit>()..getRecentlyAdded(),
+          ),
+        ],
+        child: const Scaffold(body: SafeArea(child: HomePageBody())),
       ),
     );
   }

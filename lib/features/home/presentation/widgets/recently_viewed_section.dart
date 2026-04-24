@@ -44,7 +44,6 @@ class RecentlyViewedSection extends StatelessWidget {
                     final product = products[index];
                     return ProductCard(
                       product: product,
-                      width: 200.w,
                       onTap: () {
                         context.push(AppRouter.productDetails, extra: product);
                       },

@@ -4,6 +4,7 @@ import 'package:ecommerce_app/core/network/api_error_handler.dart';
 
 abstract class HomeRemoteDataSource {
   Future<List<ProductModel>> getHotSales(int from, int to);
+  Future<List<ProductModel>> getRecentlyAddedProducts(int from, int to);
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
@@ -18,6 +19,23 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
           .from('products')
           .select('*')
           .eq('is_featured', true)
+          .order('created_at', ascending: false)
+          .range(from, to);
+
+      return response
+          .map((p) => ProductModel.fromJson(p as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      ApiErrorHandler.handle(e);
+    }
+  }
+
+  @override
+  Future<List<ProductModel>> getRecentlyAddedProducts(int from, int to) async {
+    try {
+      final List<dynamic> response = await supabaseClient
+          .from('products')
+          .select('*')
           .order('created_at', ascending: false)
           .range(from, to);
 

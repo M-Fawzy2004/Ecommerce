@@ -48,6 +48,7 @@ import '../../features/search/data/repositories/search_repository_impl.dart';
 import '../../features/search/domain/repositories/search_repository.dart';
 import '../../features/search/presentation/cubit/search_cubit.dart';
 import '../../features/cart/presentation/cubit/cart_cubit.dart';
+import '../../features/home/presentation/cubit/recently_added_cubit.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -258,6 +259,9 @@ void _initHomeDependencies() {
   // Cubit
   serviceLocator.registerFactory(
     () => HotSalesCubit(serviceLocator()),
+  );
+  serviceLocator.registerFactory(
+    () => RecentlyAddedCubit(serviceLocator()),
   );
 }
 

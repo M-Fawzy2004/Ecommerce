@@ -8,10 +8,7 @@ import 'core/theme/app_theme.dart';
 import 'core/router/app_router.dart';
 import 'core/di/init_dependencies.dart';
 import 'core/config/env_vars.dart';
-import 'features/home/presentation/cubit/recently_viewed_cubit.dart';
-import 'features/favorites/presentation/cubit/favorites_cubit.dart';
-import 'features/cart/presentation/cubit/cart_cubit.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'core/common/widgets/global_bloc_provider.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart';
@@ -60,19 +57,7 @@ class EcommerceApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) =>
-                  serviceLocator<RecentlyViewedCubit>()..loadProducts(),
-            ),
-            BlocProvider(
-              create: (context) => serviceLocator<FavoritesCubit>(),
-            ),
-            BlocProvider(
-              create: (context) => serviceLocator<CartCubit>(),
-            ),
-          ],
+        return GlobalBlocProvider(
           child: MaterialApp.router(
             debugShowCheckedModeBanner: false,
             title: 'Ecommerce App',

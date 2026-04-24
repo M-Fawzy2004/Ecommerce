@@ -6,9 +6,11 @@ import '../widgets/notification_button.dart';
 import '../widgets/home_banners.dart';
 import '../widgets/hot_sales_section.dart';
 import '../widgets/recently_viewed_section.dart';
+import '../widgets/recently_added_section.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../cubit/hot_sales_cubit.dart';
 import '../cubit/recently_viewed_cubit.dart';
+import '../cubit/recently_added_cubit.dart';
 
 class HomePageBody extends StatelessWidget {
   const HomePageBody({super.key});
@@ -20,6 +22,7 @@ class HomePageBody extends StatelessWidget {
         await Future.wait([
           context.read<HotSalesCubit>().getHotSales(isRefresh: true),
           context.read<RecentlyViewedCubit>().loadProducts(),
+          context.read<RecentlyAddedCubit>().getRecentlyAdded(isRefresh: true),
         ]);
       },
       child: CustomScrollView(
@@ -48,6 +51,8 @@ class HomePageBody extends StatelessWidget {
           const SliverToBoxAdapter(child: HotSalesSection()),
           SliverToBoxAdapter(child: AppSpacing.h24),
           const SliverToBoxAdapter(child: RecentlyViewedSection()),
+          SliverToBoxAdapter(child: AppSpacing.h24),
+          const SliverToBoxAdapter(child: RecentlyAddedSection()),
           SliverToBoxAdapter(child: AppSpacing.h64),
           // Future Slivers like Categories Grids, and Products Lists will be added here
         ],

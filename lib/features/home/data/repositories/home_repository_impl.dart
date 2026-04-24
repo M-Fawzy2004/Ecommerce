@@ -7,6 +7,8 @@ import '../../../../core/errors/failures.dart';
 
 abstract class HomeRepository {
   Future<Either<Failure, List<ProductEntity>>> getHotSales(int from, int to);
+  Future<Either<Failure, List<ProductEntity>>> getRecentlyAddedProducts(
+      int from, int to);
 }
 
 class HomeRepositoryImpl implements HomeRepository {
@@ -22,6 +24,21 @@ class HomeRepositoryImpl implements HomeRepository {
   Future<Either<Failure, List<ProductEntity>>> getHotSales(int from, int to) async {
     try {
       final products = await remoteDataSource.getHotSales(from, to);
+      return Right(products);
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return const Left(ServerFailure('An unexpected error occurred'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getRecentlyAddedProducts(
+      int from, int to) async {
+    try {
+      final products = await remoteDataSource.getRecentlyAddedProducts(from, to);
       return Right(products);
     } on NetworkException catch (e) {
       return Left(NetworkFailure(e.message));

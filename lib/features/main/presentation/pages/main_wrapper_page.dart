@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconly/iconly.dart';
 import 'package:ecommerce_app/core/cubits/network_cubit.dart';
-import 'package:ecommerce_app/core/di/init_dependencies.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainWrapperPage extends StatefulWidget {
@@ -27,73 +26,70 @@ class _MainWrapperPageState extends State<MainWrapperPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => serviceLocator<NetworkCubit>()..checkConnection(),
-      child: BlocBuilder<NetworkCubit, NetworkState>(
-        builder: (context, state) {
-          final bool isDisconnected =
-              state.status == NetworkStatus.disconnected;
+    return BlocBuilder<NetworkCubit, NetworkState>(
+      builder: (context, state) {
+        final bool isDisconnected =
+            state.status == NetworkStatus.disconnected;
 
-          return Scaffold(
-            extendBody: true,
-            body: Stack(
-              fit: StackFit.expand,
-              children: [
-                // 1. Always show content so loaded data stays visible
-                widget.navigationShell,
+        return Scaffold(
+          extendBody: true,
+          body: Stack(
+            fit: StackFit.expand,
+            children: [
+              // 1. Always show content so loaded data stays visible
+              widget.navigationShell,
 
-                // 2. Premium Top Offline Banner
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 400),
-                  curve: Curves.easeInOut,
-                  top: isDisconnected ? 40.h : -100.h,
-                  left: 20.w,
-                  right: 20.w,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 16.w,
-                      vertical: 12.h,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.error.withOpacity(0.9),
-                      borderRadius: BorderRadius.circular(16.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.error.withOpacity(0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.wifi_off_rounded,
+              // 2. Premium Top Offline Banner
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeInOut,
+                top: isDisconnected ? 40.h : -100.h,
+                left: 20.w,
+                right: 20.w,
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 12.h,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.error.withOpacity(0.9),
+                    borderRadius: BorderRadius.circular(16.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.error.withOpacity(0.3),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.wifi_off_rounded,
+                        color: Colors.white,
+                        size: 20.sp,
+                      ),
+                      SizedBox(width: 8.w),
+                      Text(
+                        "No Internet Connection",
+                        style: TextStyle(
                           color: Colors.white,
-                          size: 20.sp,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.sp,
                         ),
-                        SizedBox(width: 8.w),
-                        Text(
-                          "No Internet Connection",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14.sp,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
+              ),
 
-                // 3. Always show the Navigation Bar
-                _buildFloatingNavBar(),
-              ],
-            ),
-          );
-        },
-      ),
+              // 3. Always show the Navigation Bar
+              _buildFloatingNavBar(),
+            ],
+          ),
+        );
+      },
     );
   }
 
