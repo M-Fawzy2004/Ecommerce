@@ -159,5 +159,13 @@
         "empty": "Your cart is empty",
         "no_orders": "No orders yet",
         "promo_applied": "Promo code applied! (10% Off)"
+    },
+    "payment": {
+        "title": "Payment Method",
+        "cash_on_delivery": "Cash on Delivery",
+        "cash_desc": "Pay when you receive the product",
+        "paypal": "PayPal",
+        "mastercard": "Mastercard",
+        "confirm": "Confirm Payment"
     }
 }

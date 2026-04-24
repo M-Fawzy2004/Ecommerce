@@ -11,6 +11,8 @@ import 'package:ecommerce_app/features/main/presentation/pages/main_wrapper_page
 import 'package:ecommerce_app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:ecommerce_app/features/cart/presentation/pages/cart_orders_page.dart';
 import 'package:ecommerce_app/features/profile/presentation/pages/profile_page.dart';
+import 'package:ecommerce_app/features/cart/presentation/pages/address_picker_page.dart';
+import 'package:ecommerce_app/features/cart/presentation/pages/checkout_page.dart';
 import 'package:ecommerce_app/features/favorites/presentation/pages/favorites_page.dart';
 import 'package:ecommerce_app/features/search/presentation/pages/search_page.dart';
 import 'package:go_router/go_router.dart';
@@ -31,6 +33,8 @@ abstract class AppRouter {
   static const String home = '/home';
   static const String categories = '/categories';
   static const String cartOrders = '/cart-orders';
+  static const String checkout = '/checkout';
+  static const String addressPicker = '/address-picker';
   static const String profile = '/profile';
   static const String search = '/search';
   static const String favorites = '/favorites';
@@ -87,6 +91,18 @@ abstract class AppRouter {
         builder: (context, state) => const FavoritesPage(),
       ),
       GoRoute(path: search, builder: (context, state) => const SearchPage()),
+      GoRoute(
+        path: checkout,
+        name: 'checkout',
+        builder: (context, state) => const CheckoutPage(),
+        routes: [
+          GoRoute(
+            path: 'address-picker',
+            name: 'address_picker',
+            builder: (context, state) => const AddressPickerPage(),
+          ),
+        ],
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainWrapperPage(navigationShell: navigationShell);

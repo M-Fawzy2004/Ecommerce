@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'toast_type.dart';
-import 'toast_card.dart'; // تأكد من استدعاء الملف الجديد
+import 'toast_card.dart';
 
 class ToastWidget extends StatefulWidget {
   final String message;

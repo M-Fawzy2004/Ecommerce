@@ -10,11 +10,11 @@ enum ToastType {
   Color get color {
     switch (this) {
       case ToastType.success:
-        return AppColors.success;
-      case ToastType.error:
-        return AppColors.error;
-      case ToastType.info:
         return AppColors.primary;
+      case ToastType.error:
+        return const Color.fromARGB(255, 255, 45, 45);
+      case ToastType.info:
+        return AppColors.primaryDark;
       case ToastType.warning:
         return const Color(0xFFFFA726);
     }

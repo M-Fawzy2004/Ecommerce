@@ -5,6 +5,8 @@ import 'package:ecommerce_app/core/ui/app_spacing.dart';
 import 'package:ecommerce_app/core/ui/toast/app_toast.dart';
 import 'package:ecommerce_app/core/widgets/app_button.dart';
 import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:ecommerce_app/core/router/app_router.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -92,28 +94,33 @@ class _CartSummaryState extends State<CartSummary> {
                         ),
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(
-                        state.promoCode != null
-                            ? Icons.check_circle
-                            : Icons.arrow_forward_ios,
-                        color: state.promoCode != null
-                            ? Colors.green
-                            : AppColors.textHint,
-                        size: 20.sp,
-                      ),
-                      onPressed: () {
-                        context.read<CartCubit>().applyPromoCode(
-                          _promoController.text,
-                        );
-                        if (_promoController.text == 'MOFAWZY12') {
-                          AppToast.success(
-                            context,
-                            message: 'cart.promo_applied'.tr(),
+                    if (state.promoCode != null)
+                      IconButton(
+                        icon: Icon(Icons.close, color: Colors.red, size: 20.sp),
+                        onPressed: () {
+                          context.read<CartCubit>().clearPromoCode();
+                          _promoController.clear();
+                        },
+                      )
+                    else
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_forward_ios,
+                          color: AppColors.textHint,
+                          size: 20.sp,
+                        ),
+                        onPressed: () {
+                          context.read<CartCubit>().applyPromoCode(
+                            _promoController.text,
                           );
-                        }
-                      },
-                    ),
+                          if (_promoController.text == 'MOFAWZY12') {
+                            AppToast.success(
+                              context,
+                              message: 'cart.promo_applied'.tr(),
+                            );
+                          }
+                        },
+                      ),
                   ],
                 ),
               ),
@@ -121,11 +128,27 @@ class _CartSummaryState extends State<CartSummary> {
                 AppSpacing.h8,
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 4.w),
-                  child: Text(
-                    'cart.promo_applied'.tr(),
-                    style: AppTextStyles.bodySmall.copyWith(
-                      color: Colors.green,
-                    ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'cart.promo_applied'.tr(),
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: Colors.green,
+                        ),
+                      ),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          context.read<CartCubit>().clearPromoCode();
+                          _promoController.clear();
+                        },
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.red,
+                          size: 14.sp,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -158,7 +181,9 @@ class _CartSummaryState extends State<CartSummary> {
               AppSpacing.h16,
               AppButton(
                 text: 'cart.checkout'.tr(),
-                onPressed: () {},
+                onPressed: () {
+                  context.push(AppRouter.checkout);
+                },
                 backgroundColor: AppColors.primary,
               ),
               AppSpacing.h56,
