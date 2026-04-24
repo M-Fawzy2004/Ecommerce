@@ -12,6 +12,7 @@ import 'package:ecommerce_app/features/onboarding/presentation/pages/onboarding_
 import 'package:ecommerce_app/features/orders/presentation/pages/orders_page.dart';
 import 'package:ecommerce_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:ecommerce_app/features/favorites/presentation/pages/favorites_page.dart';
+import 'package:ecommerce_app/features/search/presentation/pages/search_page.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../../features/product_details/presentation/pages/product_details_page.dart';
@@ -31,6 +32,7 @@ abstract class AppRouter {
   static const String categories = '/categories';
   static const String orders = '/orders';
   static const String profile = '/profile';
+  static const String search = '/search';
   static const String favorites = '/favorites';
 
   static const String categoryProducts = '/category-products';
@@ -40,26 +42,14 @@ abstract class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: splash,
     routes: [
-      GoRoute(
-        path: splash,
-        builder: (context, state) => const SplashPage(),
-      ),
+      GoRoute(path: splash, builder: (context, state) => const SplashPage()),
       GoRoute(
         path: onboarding,
         builder: (context, state) => const OnboardingPage(),
       ),
-      GoRoute(
-        path: auth,
-        builder: (context, state) => const WelcomePage(),
-      ),
-      GoRoute(
-        path: login,
-        builder: (context, state) => const LoginPage(),
-      ),
-      GoRoute(
-        path: signup,
-        builder: (context, state) => const SignupPage(),
-      ),
+      GoRoute(path: auth, builder: (context, state) => const WelcomePage()),
+      GoRoute(path: login, builder: (context, state) => const LoginPage()),
+      GoRoute(path: signup, builder: (context, state) => const SignupPage()),
       GoRoute(
         path: verification,
         builder: (context, state) {
@@ -96,6 +86,7 @@ abstract class AppRouter {
         path: favorites,
         builder: (context, state) => const FavoritesPage(),
       ),
+      GoRoute(path: search, builder: (context, state) => const SearchPage()),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return MainWrapperPage(navigationShell: navigationShell);

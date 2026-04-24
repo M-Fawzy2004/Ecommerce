@@ -43,6 +43,10 @@ import '../../features/home/data/datasources/home_remote_data_source.dart';
 import '../../features/home/data/repositories/home_repository_impl.dart';
 import '../../features/home/presentation/cubit/hot_sales_cubit.dart';
 import '../../features/favorites/presentation/cubit/favorites_cubit.dart';
+import '../../features/search/data/datasources/search_remote_data_source.dart';
+import '../../features/search/data/repositories/search_repository_impl.dart';
+import '../../features/search/domain/repositories/search_repository.dart';
+import '../../features/search/presentation/cubit/search_cubit.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -73,6 +77,7 @@ Future<void> initDependencies() async {
   _initRecentlyViewedDependencies();
   _initHomeDependencies();
   _initFavoritesDependencies();
+  _initSearchDependencies();
 }
 
 void _initFavoritesDependencies() {
@@ -251,6 +256,23 @@ void _initHomeDependencies() {
   // Cubit
   serviceLocator.registerFactory(
     () => HotSalesCubit(serviceLocator()),
+  );
+}
+
+void _initSearchDependencies() {
+  // Data Source
+  serviceLocator.registerLazySingleton<SearchRemoteDataSource>(
+    () => SearchRemoteDataSourceImpl(serviceLocator()),
+  );
+
+  // Repository
+  serviceLocator.registerLazySingleton<SearchRepository>(
+    () => SearchRepositoryImpl(remoteDataSource: serviceLocator()),
+  );
+
+  // Cubit
+  serviceLocator.registerFactory(
+    () => SearchCubit(serviceLocator()),
   );
 }
 

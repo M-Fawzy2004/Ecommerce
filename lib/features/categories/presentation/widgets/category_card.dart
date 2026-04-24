@@ -53,8 +53,8 @@ class CategoryCard extends StatelessWidget {
   }
 
   Widget _buildImage() {
-    final image = category.image;
-    if (image == null || image.isEmpty) {
+    final image = category.image ?? category.fallbackImage;
+    if (image.isEmpty) {
       return Icon(Icons.category, size: 40.r, color: AppColors.textSecondary);
     }
 
