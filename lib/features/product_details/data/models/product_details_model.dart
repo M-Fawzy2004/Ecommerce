@@ -64,7 +64,7 @@ class ProductDetailsModel extends ProductDetailsEntity {
       oldPrice: salePrice != null ? originalPrice : null,
       hasFreeShipping: json['unlimited_stock'] as bool? ?? false,
       rating: (json['rating'] as num?)?.toDouble(),
-      reviewCount: json['review_count'] as int?,
+      reviewCount: (json['review_count'] as num?)?.toInt(),
       images: images,
       colors: colors,
       sku: json['sku'] as String?,

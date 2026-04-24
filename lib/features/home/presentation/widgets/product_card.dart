@@ -6,7 +6,11 @@ import 'package:ecommerce_app/features/home/domain/entities/product_entity.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce_app/features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+
+import 'package:ecommerce_app/features/home/presentation/widgets/quick_add_bottom_sheet.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductEntity product;
@@ -76,6 +80,39 @@ class ProductCard extends StatelessWidget {
                         ),
                       ),
                     ),
+                  // Favorite Button
+                  Positioned(
+                    top: 8.h,
+                    right: 8.w,
+                    child: BlocBuilder<FavoritesCubit, FavoritesState>(
+                      builder: (context, state) {
+                        final bool isFavorite = context
+                            .read<FavoritesCubit>()
+                            .isFavorite(product.id);
+                        return GestureDetector(
+                          onTap: () => context
+                              .read<FavoritesCubit>()
+                              .toggleFavorite(product),
+                          child: Container(
+                            padding: EdgeInsets.all(5.w),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              isFavorite
+                                  ? Icons.favorite_rounded
+                                  : Icons.favorite_border_rounded,
+                              size: 16.sp,
+                              color: isFavorite
+                                  ? Colors.red
+                                  : AppColors.textPrimary.withOpacity(0.4),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -102,8 +139,9 @@ class ProductCard extends StatelessWidget {
                   // Star Rating Row
                   Row(
                     children: [
-                      if (product.reviewCount != null &&
-                          product.reviewCount! > 0) ...[
+                      if ((product.rating != null && product.rating! > 0) ||
+                          (product.reviewCount != null &&
+                              product.reviewCount! > 0)) ...[
                         Text(
                           (product.rating ?? 0.0).toStringAsFixed(1),
                           style: AppTextStyles.labelSmall.copyWith(
@@ -137,7 +175,7 @@ class ProductCard extends StatelessWidget {
                         }),
                         AppSpacing.w4,
                         Text(
-                          '(${product.reviewCount})',
+                          '(${product.reviewCount ?? 0})',
                           style: TextStyle(
                             fontSize: 10.sp,
                             color: AppColors.textHint,
@@ -170,25 +208,43 @@ class ProductCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '\$${NumberFormat("#,###").format(product.price)}',
-                        style: AppTextStyles.bodyMedium.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textPrimary,
-                          fontSize: 13.sp,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '\$${NumberFormat("#,###").format(product.price)}',
+                            style: AppTextStyles.bodyMedium.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.textPrimary,
+                              fontSize: 13.sp,
+                            ),
+                          ),
+                          if (product.oldPrice != null &&
+                              product.oldPrice! > product.price)
+                            Text(
+                              '\$${NumberFormat("#,###").format(product.oldPrice)}',
+                              style: AppTextStyles.labelSmall.copyWith(
+                                decoration: TextDecoration.lineThrough,
+                                color: AppColors.textHint,
+                                fontSize: 10.sp,
+                              ),
+                            ),
+                        ],
                       ),
-                      Container(
-                        width: 30.w,
-                        height: 30.w,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primary,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 16.sp,
+                      GestureDetector(
+                        onTap: () => QuickAddBottomSheet.show(context, product),
+                        child: Container(
+                          width: 30.w,
+                          height: 30.w,
+                          decoration: const BoxDecoration(
+                            color: AppColors.primary,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            Icons.add,
+                            color: Colors.white,
+                            size: 16.sp,
+                          ),
                         ),
                       ),
                     ],

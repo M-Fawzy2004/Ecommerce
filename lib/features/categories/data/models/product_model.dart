@@ -26,10 +26,10 @@ class ProductModel extends ProductEntity {
     if (summary != null) {
       if (summary is List && summary.isNotEmpty) {
         remoteRating = (summary[0]['average_rating'] as num?)?.toDouble();
-        remoteReviewCount = summary[0]['total_reviews'] as int?;
+        remoteReviewCount = (summary[0]['total_reviews'] as num?)?.toInt();
       } else if (summary is Map) {
         remoteRating = (summary['average_rating'] as num?)?.toDouble();
-        remoteReviewCount = summary['total_reviews'] as int?;
+        remoteReviewCount = (summary['total_reviews'] as num?)?.toInt();
       }
     }
 
@@ -53,7 +53,7 @@ class ProductModel extends ProductEntity {
               json['has_free_shipping'] as bool?) ??
           false,
       rating: remoteRating ?? (json['rating'] as num?)?.toDouble(),
-      reviewCount: remoteReviewCount ?? json['review_count'] as int?,
+      reviewCount: remoteReviewCount ?? (json['review_count'] as num?)?.toInt(),
     );
   }
 
