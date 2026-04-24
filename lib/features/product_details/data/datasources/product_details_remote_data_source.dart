@@ -1,6 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/product_details_model.dart';
-import '../../../../core/errors/exceptions.dart';
+import 'package:ecommerce_app/core/network/api_error_handler.dart';
 
 abstract class ProductDetailsRemoteDataSource {
   Future<ProductDetailsModel> getProductDetails(String productId);
@@ -22,10 +22,8 @@ class ProductDetailsRemoteDataSourceImpl
           .single();
 
       return ProductDetailsModel.fromJson(response);
-    } on PostgrestException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 }

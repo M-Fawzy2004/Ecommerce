@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/usecases/get_products_by_category_usecase.dart';
 import 'category_details_state.dart';
+import 'package:ecommerce_app/core/cubits/base_cubit.dart';
 
-class CategoryDetailsCubit extends Cubit<CategoryDetailsState> {
+class CategoryDetailsCubit extends BaseCubit<CategoryDetailsState> {
   final GetProductsByCategoryUseCase getProductsByCategoryUseCase;
   static const int _pageSize = 10;
   int _currentPage = 0;

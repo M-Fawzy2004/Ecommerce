@@ -1,8 +1,8 @@
-import 'package:ecommerce_app/core/errors/exceptions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/category_model.dart';
 import '../models/product_model.dart';
 import 'categories_remote_data_source.dart';
+import 'package:ecommerce_app/core/network/api_error_handler.dart';
 
 class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
   final SupabaseClient supabaseClient;
@@ -20,10 +20,8 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
       return response
           .map((category) => CategoryModel.fromJson(category as Map<String, dynamic>))
           .toList();
-    } on PostgrestException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -40,10 +38,8 @@ class CategoriesRemoteDataSourceImpl implements CategoriesRemoteDataSource {
       return response
           .map((product) => ProductModel.fromJson(product as Map<String, dynamic>))
           .toList();
-    } on PostgrestException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 }

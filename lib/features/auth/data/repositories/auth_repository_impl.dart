@@ -102,12 +102,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   Future<Either<Failure, T>> _handleAuthOperation<T>(
       Future<T> Function() operation) async {
-    if (!await networkInfo.isConnected) {
-      return left(const NetworkFailure());
-    }
     try {
       final result = await operation();
       return right(result);
+    } on NetworkException catch (e) {
+      return left(NetworkFailure(e.message));
     } on ServerException catch (e) {
       return left(ServerFailure(e.message, statusCode: e.statusCode));
     } catch (e) {
@@ -117,12 +116,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   Future<Either<Failure, Unit>> _handleUnitOperation(
       Future<void> Function() operation) async {
-    if (!await networkInfo.isConnected) {
-      return left(const NetworkFailure());
-    }
     try {
       await operation();
       return right(unit);
+    } on NetworkException catch (e) {
+      return left(NetworkFailure(e.message));
     } on ServerException catch (e) {
       return left(ServerFailure(e.message, statusCode: e.statusCode));
     } catch (e) {

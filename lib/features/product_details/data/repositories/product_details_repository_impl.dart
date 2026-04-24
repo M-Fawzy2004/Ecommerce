@@ -17,17 +17,15 @@ class ProductDetailsRepositoryImpl implements ProductDetailsRepository {
 
   @override
   Future<Either<Failure, ProductDetailsEntity>> getProductDetails(String productId) async {
-    if (await networkInfo.isConnected) {
-      try {
+    try {
         final result = await remoteDataSource.getProductDetails(productId);
         return Right(result);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.message));
-      } catch (e) {
-        return Left(UnknownFailure(e.toString()));
-      }
-    } else {
-      return const Left(NetworkFailure());
+      } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
     }
   }
 }

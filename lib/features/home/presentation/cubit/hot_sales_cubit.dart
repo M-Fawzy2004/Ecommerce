@@ -1,6 +1,6 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/product_entity.dart';
 import '../../data/repositories/home_repository_impl.dart';
+import 'package:ecommerce_app/core/cubits/base_cubit.dart';
 
 abstract class HotSalesState {}
 
@@ -16,7 +16,7 @@ class HotSalesError extends HotSalesState {
   HotSalesError(this.message);
 }
 
-class HotSalesCubit extends Cubit<HotSalesState> {
+class HotSalesCubit extends BaseCubit<HotSalesState> {
   final HomeRepository repository;
   static const int pageSize = 5;
 

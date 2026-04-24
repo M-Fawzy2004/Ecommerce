@@ -89,10 +89,7 @@ class _ProductDetailsPageBodyState extends State<ProductDetailsPageBody> {
     return Column(
       children: [
         AppSpacing.h12,
-        Divider(
-          color: AppColors.divider.withOpacity(0.6),
-          thickness: 1.h,
-        ),
+        Divider(color: AppColors.divider.withOpacity(0.6), thickness: 1.h),
         AppSpacing.h12,
       ],
     );

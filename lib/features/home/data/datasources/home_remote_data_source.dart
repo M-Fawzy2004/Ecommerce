@@ -1,6 +1,6 @@
 import 'package:ecommerce_app/features/categories/data/models/product_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../../core/errors/exceptions.dart';
+import 'package:ecommerce_app/core/network/api_error_handler.dart';
 
 abstract class HomeRemoteDataSource {
   Future<List<ProductModel>> getHotSales(int from, int to);
@@ -24,10 +24,8 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       return response
           .map((p) => ProductModel.fromJson(p as Map<String, dynamic>))
           .toList();
-    } on PostgrestException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 }

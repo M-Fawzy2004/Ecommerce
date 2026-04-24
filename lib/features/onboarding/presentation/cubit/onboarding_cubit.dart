@@ -1,9 +1,9 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/models/onboarding_model.dart';
+import 'package:ecommerce_app/core/cubits/base_cubit.dart';
 
 part 'onboarding_state.dart';
 
-class OnboardingCubit extends Cubit<OnboardingState> {
+class OnboardingCubit extends BaseCubit<OnboardingState> {
   OnboardingCubit() : super(OnboardingInitial());
 
   final List<OnboardingModel> onboardingPages = [

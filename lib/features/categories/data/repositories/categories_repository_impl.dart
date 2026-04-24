@@ -19,37 +19,33 @@ class CategoriesRepositoryImpl implements CategoriesRepository {
 
   @override
   Future<Either<Failure, List<CategoryEntity>>> getCategories() async {
-    if (await networkInfo.isConnected) {
-      try {
+    try {
         final remoteCategories = await remoteDataSource.getCategories();
         return Right(remoteCategories);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.message));
-      } catch (e) {
-        return Left(UnknownFailure(e.toString()));
-      }
-    } else {
-      return const Left(NetworkFailure());
+      } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
     }
   }
 
   @override
   Future<Either<Failure, List<ProductEntity>>> getProductsByCategory(CategoryProductsParams params) async {
-    if (await networkInfo.isConnected) {
-      try {
+    try {
         final remoteProducts = await remoteDataSource.getProductsByCategory(
           params.categoryKey,
           params.from,
           params.to,
         );
         return Right(remoteProducts);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.message));
-      } catch (e) {
-        return Left(UnknownFailure(e.toString()));
-      }
-    } else {
-      return const Left(NetworkFailure());
+      } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
     }
   }
 }

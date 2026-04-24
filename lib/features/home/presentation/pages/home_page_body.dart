@@ -19,11 +19,7 @@ class HomePageBody extends StatelessWidget {
           sliver: SliverToBoxAdapter(
             child: Row(
               children: [
-                Expanded(
-                  child: HomeSearchBar(
-                    onTap: () {},
-                  ),
-                ),
+                Expanded(child: HomeSearchBar(onTap: () {})),
                 AppSpacing.w16,
                 NotificationButton(
                   onTap: () {},
@@ -33,27 +29,13 @@ class HomePageBody extends StatelessWidget {
             ),
           ),
         ),
-        SliverToBoxAdapter(
-          child: AppSpacing.h12,
-        ),
-        const SliverToBoxAdapter(
-          child: HomeBanners(),
-        ),
-        SliverToBoxAdapter(
-          child: AppSpacing.h24,
-        ),
-        const SliverToBoxAdapter(
-          child: HotSalesSection(),
-        ),
-        SliverToBoxAdapter(
-          child: AppSpacing.h24,
-        ),
-        const SliverToBoxAdapter(
-          child: RecentlyViewedSection(),
-        ),
-        SliverToBoxAdapter(
-          child: AppSpacing.h24,
-        ),
+        SliverToBoxAdapter(child: AppSpacing.h12),
+        const SliverToBoxAdapter(child: HomeBanners()),
+        SliverToBoxAdapter(child: AppSpacing.h24),
+        const SliverToBoxAdapter(child: HotSalesSection()),
+        SliverToBoxAdapter(child: AppSpacing.h24),
+        const SliverToBoxAdapter(child: RecentlyViewedSection()),
+        SliverToBoxAdapter(child: AppSpacing.h64),
         // Future Slivers like Categories Grids, and Products Lists will be added here
       ],
     );

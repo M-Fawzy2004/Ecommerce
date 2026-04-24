@@ -52,7 +52,8 @@ class EcommerceApp extends StatelessWidget {
         return MultiBlocProvider(
           providers: [
             BlocProvider(
-              create: (context) => serviceLocator<RecentlyViewedCubit>()..loadProducts(),
+              create: (context) =>
+                  serviceLocator<RecentlyViewedCubit>()..loadProducts(),
             ),
           ],
           child: MaterialApp.router(

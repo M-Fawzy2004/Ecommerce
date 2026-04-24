@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/usecase/usecase.dart';
 import '../../domain/entities/category_entity.dart';
 import '../../domain/usecases/get_categories_usecase.dart';
+import 'package:ecommerce_app/core/cubits/base_cubit.dart';
 
 part 'categories_state.dart';
 
-class CategoriesCubit extends Cubit<CategoriesState> {
+class CategoriesCubit extends BaseCubit<CategoriesState> {
   final GetCategoriesUseCase _getCategoriesUseCase;
 
   CategoriesCubit({

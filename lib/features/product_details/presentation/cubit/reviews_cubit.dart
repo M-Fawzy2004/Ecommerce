@@ -1,9 +1,9 @@
 import 'package:ecommerce_app/features/product_details/domain/entities/product_review_entity.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ecommerce_app/features/product_details/domain/usecases/reviews_usecases.dart';
 import 'reviews_state.dart';
+import 'package:ecommerce_app/core/cubits/base_cubit.dart';
 
-class ReviewsCubit extends Cubit<ReviewsState> {
+class ReviewsCubit extends BaseCubit<ReviewsState> {
   final GetProductReviewsUseCase _getReviews;
   final GetRatingSummaryUseCase _getSummary;
   final GetMyReviewUseCase _getMyReview;
@@ -18,12 +18,12 @@ class ReviewsCubit extends Cubit<ReviewsState> {
     required GetMyReviewUseCase getMyReview,
     required AddReviewUseCase addReview,
     required DeleteReviewUseCase deleteReview,
-  })  : _getReviews = getReviews,
-        _getSummary = getSummary,
-        _getMyReview = getMyReview,
-        _addReview = addReview,
-        _deleteReview = deleteReview,
-        super(const ReviewsInitial());
+  }) : _getReviews = getReviews,
+       _getSummary = getSummary,
+       _getMyReview = getMyReview,
+       _addReview = addReview,
+       _deleteReview = deleteReview,
+       super(const ReviewsInitial());
 
   // ── Load initial ──────────────────────────────────────────────────────────
 
@@ -33,22 +33,28 @@ class ReviewsCubit extends Cubit<ReviewsState> {
       final futures = [
         _getReviews(productId: productId, from: 0, limit: _pageSize),
         _getSummary(productId),
-        if (userId != null)
-          _getMyReview(productId: productId, userId: userId),
+        if (userId != null) _getMyReview(productId: productId, userId: userId),
       ];
       final results = await Future.wait(futures);
 
+      if (isClosed) return;
+
       final reviews = results[0] as List<ProductReviewEntity>;
       final summary = results[1] as ProductRatingSummary;
-      final myReview = userId != null ? results[2] as ProductReviewEntity? : null;
+      final myReview = userId != null
+          ? results[2] as ProductReviewEntity?
+          : null;
 
-      emit(ReviewsLoaded(
-        reviews: reviews,
-        summary: summary,
-        myReview: myReview,
-        hasMore: reviews.length == _pageSize,
-      ));
+      emit(
+        ReviewsLoaded(
+          reviews: reviews,
+          summary: summary,
+          myReview: myReview,
+          hasMore: reviews.length == _pageSize,
+        ),
+      );
     } catch (e) {
+      if (isClosed) return;
       emit(ReviewsError(e.toString()));
     }
   }
@@ -66,12 +72,16 @@ class ReviewsCubit extends Cubit<ReviewsState> {
         from: current.reviews.length,
         limit: _pageSize,
       );
-      emit(current.copyWith(
-        reviews: [...current.reviews, ...more],
-        hasMore: more.length == _pageSize,
-        isLoadingMore: false,
-      ));
+      if (isClosed) return;
+      emit(
+        current.copyWith(
+          reviews: [...current.reviews, ...more],
+          hasMore: more.length == _pageSize,
+          isLoadingMore: false,
+        ),
+      );
     } catch (e) {
+      if (isClosed) return;
       emit(current.copyWith(isLoadingMore: false));
     }
   }
@@ -81,10 +91,12 @@ class ReviewsCubit extends Cubit<ReviewsState> {
   void showLess(String productId) {
     final current = state;
     if (current is! ReviewsLoaded) return;
-    emit(current.copyWith(
-      reviews: current.reviews.take(_pageSize).toList(),
-      hasMore: true,
-    ));
+    emit(
+      current.copyWith(
+        reviews: current.reviews.take(_pageSize).toList(),
+        hasMore: true,
+      ),
+    );
   }
 
   // ── Submit review ──────────────────────────────────────────────────────────
@@ -107,8 +119,10 @@ class ReviewsCubit extends Cubit<ReviewsState> {
         rating: rating,
         comment: comment,
       );
+      if (isClosed) return;
       await loadReviews(productId, userId: userId);
     } catch (e) {
+      if (isClosed) return;
       emit(current.copyWith(isSubmitting: false));
       emit(ReviewsError(e.toString()));
     }
@@ -125,8 +139,10 @@ class ReviewsCubit extends Cubit<ReviewsState> {
     emit(current.copyWith(isDeleting: true));
     try {
       await _deleteReview(current.myReview!.id);
+      if (isClosed) return;
       await loadReviews(productId, userId: userId);
     } catch (e) {
+      if (isClosed) return;
       emit(current.copyWith(isDeleting: false));
       emit(ReviewsError(e.toString()));
     }

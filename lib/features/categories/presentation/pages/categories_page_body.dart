@@ -152,7 +152,7 @@ class CategoriesPageBody extends StatelessWidget {
                   }, childCount: list.length),
                 ),
               ),
-              SliverToBoxAdapter(child: AppSpacing.h20),
+              SliverToBoxAdapter(child: AppSpacing.h64),
             ],
           ),
         );

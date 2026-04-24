@@ -20,15 +20,15 @@ class HomeRepositoryImpl implements HomeRepository {
 
   @override
   Future<Either<Failure, List<ProductEntity>>> getHotSales(int from, int to) async {
-    if (await networkInfo.isConnected) {
-      try {
-        final products = await remoteDataSource.getHotSales(from, to);
-        return Right(products);
-      } on ServerException catch (e) {
-        return Left(ServerFailure(e.message));
-      }
-    } else {
-      return const Left(ServerFailure('No internet connection'));
+    try {
+      final products = await remoteDataSource.getHotSales(from, to);
+      return Right(products);
+    } on NetworkException catch (e) {
+      return Left(NetworkFailure(e.message));
+    } on ServerException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return const Left(ServerFailure('An unexpected error occurred'));
     }
   }
 }

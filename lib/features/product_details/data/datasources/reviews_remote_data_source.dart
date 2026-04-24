@@ -1,6 +1,6 @@
-import 'package:ecommerce_app/core/errors/exceptions.dart';
 import 'package:ecommerce_app/features/product_details/data/models/product_review_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ecommerce_app/core/network/api_error_handler.dart';
 
 abstract class ReviewsRemoteDataSource {
   Future<List<ProductReviewModel>> getReviews({
@@ -50,10 +50,8 @@ class ReviewsRemoteDataSourceImpl implements ReviewsRemoteDataSource {
       return (response as List)
           .map((e) => ProductReviewModel.fromJson(e as Map<String, dynamic>))
           .toList();
-    } on PostgrestException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -68,10 +66,8 @@ class ReviewsRemoteDataSourceImpl implements ReviewsRemoteDataSource {
 
       if (response == null) return ProductRatingSummaryModel.empty();
       return ProductRatingSummaryModel.fromJson(response);
-    } on PostgrestException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -90,10 +86,8 @@ class ReviewsRemoteDataSourceImpl implements ReviewsRemoteDataSource {
 
       if (response == null) return null;
       return ProductReviewModel.fromJson(response);
-    } on PostgrestException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -113,10 +107,8 @@ class ReviewsRemoteDataSourceImpl implements ReviewsRemoteDataSource {
         'rating': rating,
         'comment': comment,
       });
-    } on PostgrestException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -127,10 +119,8 @@ class ReviewsRemoteDataSourceImpl implements ReviewsRemoteDataSource {
           .from('product_reviews')
           .delete()
           .eq('id', reviewId);
-    } on PostgrestException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 }

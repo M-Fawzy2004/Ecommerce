@@ -93,7 +93,7 @@ class _ProfilePageBodyState extends State<ProfilePageBody> {
             },
             isDestructive: true,
           ),
-          AppSpacing.h24, // Extra space for navigation bar
+          AppSpacing.h64, // Extra space for navigation bar
         ],
       ),
     );

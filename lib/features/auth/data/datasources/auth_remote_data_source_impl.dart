@@ -2,6 +2,7 @@ import 'package:ecommerce_app/core/errors/exceptions.dart';
 import 'package:ecommerce_app/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:ecommerce_app/features/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ecommerce_app/core/network/api_error_handler.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final SupabaseClient supabaseClient;
@@ -27,10 +28,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw const ServerException('User creation failed.');
       }
       return UserModel.fromMap(response.user!.toJson());
-    } on AuthException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -48,10 +47,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         throw const ServerException('Login failed.');
       }
       return UserModel.fromMap(response.user!.toJson());
-    } on AuthException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -67,10 +64,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         token: token,
         email: email,
       );
-    } on AuthException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -81,10 +76,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         type: OtpType.signup,
         email: email,
       );
-    } on AuthException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -92,10 +85,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> sendPasswordResetEmail({required String email}) async {
     try {
       await supabaseClient.auth.resetPasswordForEmail(email);
-    } on AuthException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -105,10 +96,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       await supabaseClient.auth.updateUser(
         UserAttributes(password: newPassword),
       );
-    } on AuthException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 
@@ -116,10 +105,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> logout() async {
     try {
       await supabaseClient.auth.signOut();
-    } on AuthException catch (e) {
-      throw ServerException(e.message);
     } catch (e) {
-      throw ServerException(e.toString());
+      ApiErrorHandler.handle(e);
     }
   }
 }

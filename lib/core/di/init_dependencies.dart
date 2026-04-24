@@ -7,7 +7,7 @@ import 'package:ecommerce_app/features/categories/domain/usecases/get_categories
 import 'package:ecommerce_app/features/home/data/datasources/recently_viewed_local_data_source.dart';
 import 'package:ecommerce_app/features/home/data/repositories/recently_viewed_repository_impl.dart';
 import 'package:get_it/get_it.dart';
-import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:ecommerce_app/core/cubits/network_cubit.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../features/auth/data/datasources/auth_remote_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
@@ -50,10 +50,12 @@ Future<void> initDependencies() async {
   final sharedPrefs = await SharedPreferences.getInstance();
   serviceLocator.registerLazySingleton(() => sharedPrefs);
 
-  serviceLocator.registerLazySingleton(() => InternetConnection());
-
   serviceLocator.registerLazySingleton<NetworkInfo>(
-    () => NetworkInfoImpl(serviceLocator()),
+    () => const NetworkInfoImpl(),
+  );
+
+  serviceLocator.registerLazySingleton(
+    () => NetworkCubit(serviceLocator()),
   );
 
   serviceLocator.registerLazySingleton(() => ApiClient().dio);

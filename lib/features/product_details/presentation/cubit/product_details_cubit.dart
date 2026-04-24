@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/usecases/get_product_details_usecase.dart';
 import 'product_details_state.dart';
+import 'package:ecommerce_app/core/cubits/base_cubit.dart';
 
-class ProductDetailsCubit extends Cubit<ProductDetailsState> {
+class ProductDetailsCubit extends BaseCubit<ProductDetailsState> {
   final GetProductDetailsUseCase getProductDetailsUseCase;
 
   ProductDetailsCubit({required this.getProductDetailsUseCase}) : super(ProductDetailsInitial());
