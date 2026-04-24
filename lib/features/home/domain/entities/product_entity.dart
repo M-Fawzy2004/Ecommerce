@@ -59,4 +59,32 @@ class ProductEntity extends Equatable {
     rating,
     reviewCount,
   ];
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'image': image,
+      'price': price,
+      'oldPrice': oldPrice,
+      'hasFreeShipping': hasFreeShipping,
+      'rating': rating,
+      'reviewCount': reviewCount,
+    };
+  }
+
+  factory ProductEntity.fromJson(Map<String, dynamic> json) {
+    return ProductEntity(
+      id: json['id'],
+      name: json['name'],
+      description: json['description'],
+      image: json['image'],
+      price: (json['price'] as num).toDouble(),
+      oldPrice: (json['oldPrice'] as num?)?.toDouble(),
+      hasFreeShipping: json['hasFreeShipping'] ?? false,
+      rating: (json['rating'] as num?)?.toDouble(),
+      reviewCount: json['reviewCount'] as int?,
+    );
+  }
 }

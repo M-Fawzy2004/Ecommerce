@@ -14,12 +14,14 @@ class ProductDetailsPageBody extends StatefulWidget {
   final ProductDetailsEntity product;
   final int initialQuantity;
   final ValueChanged<int> onQuantityChanged;
+  final ValueChanged<String> onColorChanged;
 
   const ProductDetailsPageBody({
     super.key,
     required this.product,
     required this.initialQuantity,
     required this.onQuantityChanged,
+    required this.onColorChanged,
   });
 
   @override
@@ -34,6 +36,13 @@ class _ProductDetailsPageBodyState extends State<ProductDetailsPageBody> {
   void initState() {
     super.initState();
     _quantity = widget.initialQuantity;
+    if (widget.product.colors.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          widget.onColorChanged(widget.product.colors[_selectedColorIndex].name);
+        }
+      });
+    }
   }
 
   @override
@@ -41,6 +50,16 @@ class _ProductDetailsPageBodyState extends State<ProductDetailsPageBody> {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.initialQuantity != widget.initialQuantity) {
       _quantity = widget.initialQuantity;
+    }
+    // Only re-initialize if the product itself changed
+    if (oldWidget.product.id != widget.product.id &&
+        widget.product.colors.isNotEmpty) {
+      _selectedColorIndex = 0;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          widget.onColorChanged(widget.product.colors[_selectedColorIndex].name);
+        }
+      });
     }
   }
 
@@ -59,6 +78,7 @@ class _ProductDetailsPageBodyState extends State<ProductDetailsPageBody> {
         _quantity = maxStock;
         widget.onQuantityChanged(_quantity);
       }
+      widget.onColorChanged(widget.product.colors[index].name);
     });
   }
 

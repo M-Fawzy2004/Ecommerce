@@ -47,6 +47,7 @@ import '../../features/search/data/datasources/search_remote_data_source.dart';
 import '../../features/search/data/repositories/search_repository_impl.dart';
 import '../../features/search/domain/repositories/search_repository.dart';
 import '../../features/search/presentation/cubit/search_cubit.dart';
+import '../../features/cart/presentation/cubit/cart_cubit.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -78,6 +79,7 @@ Future<void> initDependencies() async {
   _initHomeDependencies();
   _initFavoritesDependencies();
   _initSearchDependencies();
+  _initCartDependencies();
 }
 
 void _initFavoritesDependencies() {
@@ -274,5 +276,9 @@ void _initSearchDependencies() {
   serviceLocator.registerFactory(
     () => SearchCubit(serviceLocator()),
   );
+}
+
+void _initCartDependencies() {
+  serviceLocator.registerLazySingleton(() => CartCubit());
 }
 

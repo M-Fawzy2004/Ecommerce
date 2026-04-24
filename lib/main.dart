@@ -10,6 +10,7 @@ import 'core/di/init_dependencies.dart';
 import 'core/config/env_vars.dart';
 import 'features/home/presentation/cubit/recently_viewed_cubit.dart';
 import 'features/favorites/presentation/cubit/favorites_cubit.dart';
+import 'features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:path_provider/path_provider.dart';
@@ -67,6 +68,9 @@ class EcommerceApp extends StatelessWidget {
             ),
             BlocProvider(
               create: (context) => serviceLocator<FavoritesCubit>(),
+            ),
+            BlocProvider(
+              create: (context) => serviceLocator<CartCubit>(),
             ),
           ],
           child: MaterialApp.router(

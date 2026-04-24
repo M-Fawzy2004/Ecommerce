@@ -9,7 +9,7 @@ import 'package:ecommerce_app/features/home/domain/entities/product_entity.dart'
 import 'package:ecommerce_app/features/home/presentation/pages/home_page.dart';
 import 'package:ecommerce_app/features/main/presentation/pages/main_wrapper_page.dart';
 import 'package:ecommerce_app/features/onboarding/presentation/pages/onboarding_page.dart';
-import 'package:ecommerce_app/features/orders/presentation/pages/orders_page.dart';
+import 'package:ecommerce_app/features/cart/presentation/pages/cart_orders_page.dart';
 import 'package:ecommerce_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:ecommerce_app/features/favorites/presentation/pages/favorites_page.dart';
 import 'package:ecommerce_app/features/search/presentation/pages/search_page.dart';
@@ -30,7 +30,7 @@ abstract class AppRouter {
 
   static const String home = '/home';
   static const String categories = '/categories';
-  static const String orders = '/orders';
+  static const String cartOrders = '/cart-orders';
   static const String profile = '/profile';
   static const String search = '/search';
   static const String favorites = '/favorites';
@@ -111,8 +111,8 @@ abstract class AppRouter {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: orders,
-                builder: (context, state) => const OrdersPage(),
+                path: cartOrders,
+                builder: (context, state) => const CartOrdersPage(),
               ),
             ],
           ),

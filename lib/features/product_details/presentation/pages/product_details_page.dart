@@ -10,6 +10,7 @@ import 'package:ecommerce_app/features/product_details/presentation/cubit/produc
 import 'package:ecommerce_app/features/product_details/presentation/cubit/product_details_state.dart';
 import 'package:ecommerce_app/features/product_details/presentation/cubit/reviews_cubit.dart';
 import 'package:ecommerce_app/features/product_details/presentation/cubit/reviews_state.dart';
+import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -28,10 +29,17 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   int _quantity = 1;
+  String? _selectedColor;
 
   void _onQuantityChanged(int quantity) {
     setState(() {
       _quantity = quantity;
+    });
+  }
+
+  void _onColorChanged(String color) {
+    setState(() {
+      _selectedColor = color;
     });
   }
 
@@ -121,13 +129,21 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 product: detailsProduct,
                 initialQuantity: _quantity,
                 onQuantityChanged: _onQuantityChanged,
+                onColorChanged: _onColorChanged,
               ),
               bottomNavigationBar: ProductBottomBar(
                 price: detailsProduct.price * _quantity,
-                onAddToCart: () => AppToast.success(
-                  context,
-                  message: 'product.added_to_cart'.tr(),
-                ),
+                onAddToCart: () {
+                  context.read<CartCubit>().addToCart(
+                        detailsProduct,
+                        quantity: _quantity,
+                        color: _selectedColor,
+                      );
+                  AppToast.success(
+                    context,
+                    message: 'product.added_to_cart'.tr(),
+                  );
+                },
               ),
             );
           },

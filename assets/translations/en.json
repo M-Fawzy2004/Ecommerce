@@ -146,5 +146,18 @@
     },
     "favorites": {
         "no_items": "No favorites yet"
+    },
+    "cart": {
+        "title": "Cart",
+        "orders": "Orders",
+        "subtotal": "Subtotal",
+        "shipping": "Shipping",
+        "total": "Total amount",
+        "checkout": "Checkout",
+        "promo_hint": "Enter your promo code",
+        "discount": "Discount",
+        "empty": "Your cart is empty",
+        "no_orders": "No orders yet",
+        "promo_applied": "Promo code applied! (10% Off)"
     }
 }
