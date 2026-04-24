@@ -6,6 +6,7 @@ import 'package:ecommerce_app/features/categories/domain/entities/category_entit
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:ecommerce_app/core/extensions/category_extension.dart';
 
 class CategoryCard extends StatelessWidget {
   final CategoryEntity category;
@@ -38,7 +39,7 @@ class CategoryCard extends StatelessWidget {
           ),
           AppSpacing.h8,
           Text(
-            category.name,
+            category.translatedName,
             style: AppTextStyles.bodyMedium.copyWith(
               fontWeight: FontWeight.w600,
               color: AppColors.textPrimary,

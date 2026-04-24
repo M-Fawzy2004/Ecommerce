@@ -42,6 +42,7 @@ import '../../features/home/presentation/cubit/recently_viewed_cubit.dart';
 import '../../features/home/data/datasources/home_remote_data_source.dart';
 import '../../features/home/data/repositories/home_repository_impl.dart';
 import '../../features/home/presentation/cubit/hot_sales_cubit.dart';
+import '../../features/favorites/presentation/cubit/favorites_cubit.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -71,6 +72,11 @@ Future<void> initDependencies() async {
   _initReviewsDependencies();
   _initRecentlyViewedDependencies();
   _initHomeDependencies();
+  _initFavoritesDependencies();
+}
+
+void _initFavoritesDependencies() {
+  serviceLocator.registerLazySingleton(() => FavoritesCubit());
 }
 
 // ... existing code ...

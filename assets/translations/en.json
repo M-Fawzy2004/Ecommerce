@@ -141,6 +141,10 @@
         "show_less_reviews": "Show Less",
         "no_reviews_yet": "No reviews yet. Be the first!",
         "your_review": "Your Review",
-        "delete_review": "Delete Review"
+        "delete_review": "Delete Review",
+        "add": "Add"
+    },
+    "favorites": {
+        "no_items": "No favorites yet"
     }
 }

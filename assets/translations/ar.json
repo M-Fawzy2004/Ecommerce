@@ -141,6 +141,10 @@
         "show_less_reviews": "عرض أقل",
         "no_reviews_yet": "لا توجد مراجعات بعد. كن الأول!",
         "your_review": "مراجعتك",
-        "delete_review": "حذف المراجعة"
+        "delete_review": "حذف المراجعة",
+        "add": "إضافة"
+    },
+    "favorites": {
+        "no_items": "لا توجد منتجات في المفضلة بعد"
     }
 }

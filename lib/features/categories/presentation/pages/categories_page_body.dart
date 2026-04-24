@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:ecommerce_app/core/extensions/category_extension.dart';
 import '../widgets/category_card.dart';
 
 class CategoriesPageBody extends StatelessWidget {
@@ -143,7 +144,7 @@ class CategoriesPageBody extends StatelessWidget {
                               context.push(
                                 AppRouter.categoryProducts,
                                 extra: {
-                                  'name': category.name,
+                                  'name': category.translatedName,
                                   'key': category.key,
                                 },
                               );

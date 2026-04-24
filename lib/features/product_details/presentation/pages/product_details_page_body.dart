@@ -50,7 +50,7 @@ class _ProductDetailsPageBodyState extends State<ProductDetailsPageBody> {
       physics: const BouncingScrollPhysics(),
       slivers: [
         // Custom Header with icons over carousel
-        ProductDetailsSliverAppBar(images: widget.product.images),
+        ProductDetailsSliverAppBar(product: widget.product),
 
         // Content
         SliverPadding(

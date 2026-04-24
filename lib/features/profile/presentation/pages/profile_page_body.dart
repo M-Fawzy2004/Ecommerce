@@ -7,6 +7,8 @@ import 'package:ecommerce_app/features/profile/presentation/widgets/profile_head
 import 'package:ecommerce_app/features/profile/presentation/widgets/profile_settings_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:ecommerce_app/core/router/app_router.dart';
 import 'package:iconly/iconly.dart';
 
 class ProfilePageBody extends StatefulWidget {
@@ -44,7 +46,7 @@ class _ProfilePageBodyState extends State<ProfilePageBody> {
           ProfileSettingsTile(
             icon: IconlyLight.heart,
             title: 'profile.favorite'.tr(),
-            onTap: () {},
+            onTap: () => context.push(AppRouter.favorites),
           ),
           ProfileSettingsTile(
             icon: IconlyLight.bag,

@@ -11,6 +11,7 @@ import 'package:ecommerce_app/features/main/presentation/pages/main_wrapper_page
 import 'package:ecommerce_app/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:ecommerce_app/features/orders/presentation/pages/orders_page.dart';
 import 'package:ecommerce_app/features/profile/presentation/pages/profile_page.dart';
+import 'package:ecommerce_app/features/favorites/presentation/pages/favorites_page.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../../features/product_details/presentation/pages/product_details_page.dart';
@@ -30,6 +31,7 @@ abstract class AppRouter {
   static const String categories = '/categories';
   static const String orders = '/orders';
   static const String profile = '/profile';
+  static const String favorites = '/favorites';
 
   static const String categoryProducts = '/category-products';
   static const String productDetails = '/product-details';
@@ -89,6 +91,10 @@ abstract class AppRouter {
           final product = state.extra as ProductEntity;
           return ProductDetailsPage(product: product);
         },
+      ),
+      GoRoute(
+        path: favorites,
+        builder: (context, state) => const FavoritesPage(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

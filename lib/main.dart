@@ -9,7 +9,11 @@ import 'core/router/app_router.dart';
 import 'core/di/init_dependencies.dart';
 import 'core/config/env_vars.dart';
 import 'features/home/presentation/cubit/recently_viewed_cubit.dart';
+import 'features/favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +29,12 @@ void main() async {
   );
 
   await initDependencies();
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorage.webStorageDirectory
+        : await getApplicationDocumentsDirectory(),
+  );
 
   runApp(
     EasyLocalization(
@@ -54,6 +64,9 @@ class EcommerceApp extends StatelessWidget {
             BlocProvider(
               create: (context) =>
                   serviceLocator<RecentlyViewedCubit>()..loadProducts(),
+            ),
+            BlocProvider(
+              create: (context) => serviceLocator<FavoritesCubit>(),
             ),
           ],
           child: MaterialApp.router(
