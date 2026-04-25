@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconly/iconly.dart';
 
 class AppTextField extends StatefulWidget {
-  final String label;
+  final String? label;
   final String hintText;
   final bool isPassword;
   final TextInputType keyboardType;
@@ -19,7 +19,7 @@ class AppTextField extends StatefulWidget {
 
   const AppTextField({
     super.key,
-    required this.label,
+    this.label,
     required this.hintText,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
@@ -55,7 +55,7 @@ class _AppTextFieldState extends State<AppTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          widget.label,
+          widget.label ?? '',
           style: AppTextStyles.titleMedium.copyWith(
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
@@ -85,8 +85,10 @@ class _AppTextFieldState extends State<AppTextField> {
                     ),
                   )
                 : widget.suffixIcon,
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 12.w,
+              vertical: 14.h,
+            ),
             border: OutlineInputBorder(
               borderRadius: AppRadius.r16,
               borderSide: const BorderSide(color: AppColors.divider),
@@ -97,8 +99,10 @@ class _AppTextFieldState extends State<AppTextField> {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: AppRadius.r16,
-              borderSide:
-                  const BorderSide(color: AppColors.primary, width: 1.5),
+              borderSide: const BorderSide(
+                color: AppColors.primary,
+                width: 1.5,
+              ),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: AppRadius.r16,

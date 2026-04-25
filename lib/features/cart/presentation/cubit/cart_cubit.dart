@@ -62,6 +62,12 @@ class CartCubit extends HydratedCubit<CartState> {
     emit(state.copyWith(items: updatedItems));
   }
 
+  void clearCart() {
+    final remainingItems = state.items.where((item) => !item.isSelected).toList();
+    emit(state.copyWith(items: remainingItems));
+  }
+
+
   void applyPromoCode(String code) {
     if (code == 'MOFAWZY12') {
       emit(state.copyWith(promoCode: code, discountPercentage: 10));

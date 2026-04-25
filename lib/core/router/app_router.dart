@@ -12,7 +12,8 @@ import 'package:ecommerce_app/features/onboarding/presentation/pages/onboarding_
 import 'package:ecommerce_app/features/cart/presentation/pages/cart_orders_page.dart';
 import 'package:ecommerce_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:ecommerce_app/features/cart/presentation/pages/address_picker_page.dart';
-import 'package:ecommerce_app/features/cart/presentation/pages/checkout_page.dart';
+import 'package:ecommerce_app/features/checkout/presentation/pages/checkout_page.dart';
+
 import 'package:ecommerce_app/features/favorites/presentation/pages/favorites_page.dart';
 import 'package:ecommerce_app/features/search/presentation/pages/search_page.dart';
 import 'package:go_router/go_router.dart';

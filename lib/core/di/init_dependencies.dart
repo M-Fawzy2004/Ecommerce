@@ -49,6 +49,15 @@ import '../../features/search/domain/repositories/search_repository.dart';
 import '../../features/search/presentation/cubit/search_cubit.dart';
 import '../../features/cart/presentation/cubit/cart_cubit.dart';
 import '../../features/home/presentation/cubit/recently_added_cubit.dart';
+import '../../features/checkout/data/datasources/paymob_remote_data_source.dart';
+import '../../features/checkout/data/datasources/supabase_data_source.dart';
+import '../../features/checkout/data/repositories/checkout_repository_impl.dart';
+import '../../features/checkout/domain/repositories/checkout_repository.dart';
+import '../../features/checkout/domain/usecases/create_order_usecase.dart';
+import '../../features/checkout/domain/usecases/confirm_order_usecase.dart';
+import '../../features/checkout/domain/usecases/process_payment_usecase.dart';
+import '../../features/checkout/presentation/cubit/checkout_cubit.dart';
+
 
 final serviceLocator = GetIt.instance;
 
@@ -81,7 +90,9 @@ Future<void> initDependencies() async {
   _initFavoritesDependencies();
   _initSearchDependencies();
   _initCartDependencies();
+  _initCheckoutDependencies();
 }
+
 
 void _initFavoritesDependencies() {
   serviceLocator.registerLazySingleton(() => FavoritesCubit());
@@ -285,4 +296,40 @@ void _initSearchDependencies() {
 void _initCartDependencies() {
   serviceLocator.registerLazySingleton(() => CartCubit());
 }
+
+void _initCheckoutDependencies() {
+  // Data Sources
+  serviceLocator.registerLazySingleton<PaymobRemoteDataSource>(
+    () => PaymobRemoteDataSourceImpl(serviceLocator()),
+  );
+  serviceLocator.registerLazySingleton<SupabaseDataSource>(
+    () => SupabaseDataSourceImpl(serviceLocator()),
+  );
+
+  // Repository
+  serviceLocator.registerLazySingleton<CheckoutRepository>(
+    () => CheckoutRepositoryImpl(
+      paymobDataSource: serviceLocator(),
+      supabaseDataSource: serviceLocator(),
+    ),
+  );
+
+  // UseCases
+  serviceLocator
+      .registerLazySingleton(() => CreateOrderUseCase(serviceLocator()));
+  serviceLocator
+      .registerLazySingleton(() => ConfirmOrderUseCase(serviceLocator()));
+  serviceLocator
+      .registerLazySingleton(() => ProcessPaymentUseCase(serviceLocator()));
+
+  // Cubit
+  serviceLocator.registerFactory(
+    () => CheckoutCubit(
+      createOrderUseCase: serviceLocator(),
+      confirmOrderUseCase: serviceLocator(),
+      processPaymentUseCase: serviceLocator(),
+    ),
+  );
+}
+
 
