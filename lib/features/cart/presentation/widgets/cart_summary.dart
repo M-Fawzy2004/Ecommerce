@@ -4,6 +4,8 @@ import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
 import 'package:ecommerce_app/core/ui/toast/app_toast.dart';
 import 'package:ecommerce_app/core/widgets/app_button.dart';
+import 'package:ecommerce_app/core/widgets/info_banner.dart';
+
 import 'package:ecommerce_app/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:ecommerce_app/core/router/app_router.dart';
 import 'package:go_router/go_router.dart';
@@ -177,6 +179,10 @@ class _CartSummaryState extends State<CartSummary> {
                 'cart.total'.tr(),
                 '\$${state.total.toStringAsFixed(2)}',
                 isTotal: true,
+              ),
+              AppSpacing.h16,
+              InfoBanner(
+                message: 'cart.delivery_info'.tr(),
               ),
               AppSpacing.h16,
               AppButton(

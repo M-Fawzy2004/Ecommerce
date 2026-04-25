@@ -9,6 +9,9 @@ import '../widgets/product_colors_section.dart';
 import '../widgets/product_description_section.dart';
 import '../widgets/product_specifications_section.dart';
 import '../widgets/product_reviews_section.dart';
+import 'package:ecommerce_app/core/widgets/info_banner.dart';
+import 'package:easy_localization/easy_localization.dart';
+
 
 class ProductDetailsPageBody extends StatefulWidget {
   final ProductDetailsEntity product;
@@ -108,7 +111,12 @@ class _ProductDetailsPageBodyState extends State<ProductDetailsPageBody> {
                 maxQuantity: _getMaxStock(),
                 onQuantityChanged: _onQuantityChanged,
               ),
+              AppSpacing.h16,
+              InfoBanner(
+                message: "product.shipping_info".tr(),
+              ),
               _buildDivider(),
+
               ProductColorsSection(
                 colors: widget.product.colors,
                 initialIndex: _selectedColorIndex,
