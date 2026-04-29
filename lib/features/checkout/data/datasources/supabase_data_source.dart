@@ -37,46 +37,80 @@ class SupabaseDataSourceImpl implements SupabaseDataSource {
   @override
   Stream<List<OrderModel>> streamOrders(String userId) {
     final controller = StreamController<List<OrderModel>>();
+    List<OrderModel> localOrders = [];
 
-    // Helper to fetch orders from DB
-    Future<void> fetchAndEmit() async {
+    void emitCopy() {
+      if (!controller.isClosed) {
+        controller.add(List<OrderModel>.from(localOrders));
+      }
+    }
+
+    // Initial fetch from DB (one-time only)
+    Future<void> initialFetch() async {
       try {
         final data = await supabaseClient
             .from('orders')
             .select()
             .eq('user_id', userId)
             .order('created_at', ascending: false);
-        final orders = (data as List)
+        localOrders = (data as List)
             .map((json) => OrderModel.fromJson(json as Map<String, dynamic>))
             .toList();
-        if (!controller.isClosed) {
-          controller.add(orders);
-        }
+        emitCopy();
       } catch (e) {
-        if (!controller.isClosed) {
-          controller.addError(e);
-        }
+        if (!controller.isClosed) controller.addError(e);
       }
     }
 
-    // Initial fetch
-    fetchAndEmit();
+    initialFetch();
 
-    // Listen to ALL changes on the orders table (no filter = no REPLICA IDENTITY dependency)
+    // Listen to ALL changes — use payload directly, no re-fetch
     final channel = supabaseClient
-        .channel('orders_realtime_${DateTime.now().millisecondsSinceEpoch}')
+        .channel('orders_rt_${userId.hashCode}')
         .onPostgresChanges(
-          event: PostgresChangeEvent.all,
+          event: PostgresChangeEvent.insert,
           schema: 'public',
           table: 'orders',
           callback: (payload) {
-            // Any change on the orders table → re-fetch user's orders
-            fetchAndEmit();
+            final newRecord = payload.newRecord;
+            if (newRecord['user_id'] != userId) return;
+            try {
+              final order = OrderModel.fromJson(newRecord);
+              localOrders.insert(0, order);
+              emitCopy();
+            } catch (_) {}
+          },
+        )
+        .onPostgresChanges(
+          event: PostgresChangeEvent.update,
+          schema: 'public',
+          table: 'orders',
+          callback: (payload) {
+            final newRecord = payload.newRecord;
+            final orderId = newRecord['id']?.toString();
+            if (orderId == null) return;
+            final index = localOrders.indexWhere((o) => o.id == orderId);
+            if (index == -1) return;
+            try {
+              localOrders[index] = OrderModel.fromJson(newRecord);
+              emitCopy();
+            } catch (_) {}
+          },
+        )
+        .onPostgresChanges(
+          event: PostgresChangeEvent.delete,
+          schema: 'public',
+          table: 'orders',
+          callback: (payload) {
+            final oldRecord = payload.oldRecord;
+            final orderId = oldRecord['id']?.toString();
+            if (orderId == null) return;
+            localOrders.removeWhere((o) => o.id == orderId);
+            emitCopy();
           },
         )
         .subscribe();
 
-    // Clean up when stream is no longer listened to
     controller.onCancel = () {
       supabaseClient.removeChannel(channel);
       controller.close();
@@ -85,4 +119,3 @@ class SupabaseDataSourceImpl implements SupabaseDataSource {
     return controller.stream;
   }
 }
-
