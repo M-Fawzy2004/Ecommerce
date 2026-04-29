@@ -2,11 +2,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:ecommerce_app/core/theme/app_colors.dart';
 import 'package:ecommerce_app/core/theme/app_text_styles.dart';
 import 'package:ecommerce_app/core/ui/app_spacing.dart';
+import 'package:ecommerce_app/features/checkout/domain/entities/order_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class OrderListItem extends StatefulWidget {
-  final Map<String, dynamic> order;
+  final OrderEntity order;
 
   const OrderListItem({super.key, required this.order});
 
@@ -16,12 +18,47 @@ class OrderListItem extends StatefulWidget {
 
 class _OrderListItemState extends State<OrderListItem> {
   bool _isExpanded = false;
+  late String _currentStatus;
+  bool _isRefreshing = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentStatus = widget.order.status;
+  }
+
+  @override
+  void didUpdateWidget(covariant OrderListItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.order.status != widget.order.status) {
+      _currentStatus = widget.order.status;
+    }
+  }
+
+  Future<void> _refreshOrder() async {
+    setState(() => _isRefreshing = true);
+    try {
+      final data = await Supabase.instance.client
+          .from('orders')
+          .select('status')
+          .eq('id', widget.order.id)
+          .single();
+      if (mounted) {
+        setState(() {
+          _currentStatus = data['status'] as String;
+          _isRefreshing = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) setState(() => _isRefreshing = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final status = widget.order['status'] as String;
-    final date = DateTime.parse(widget.order['created_at']).toLocal();
-    final total = widget.order['total_amount'] as num;
+    final status = _currentStatus;
+    final date = widget.order.createdAt.toLocal();
+    final total = widget.order.totalAmount;
 
     Color statusColor;
     String statusText;
@@ -73,7 +110,11 @@ class _OrderListItemState extends State<OrderListItem> {
     }
 
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        if (!_isExpanded) {
+          // Expanding → fetch latest status
+          await _refreshOrder();
+        }
         setState(() {
           _isExpanded = !_isExpanded;
         });
@@ -106,7 +147,7 @@ class _OrderListItemState extends State<OrderListItem> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '#${widget.order['order_code']}',
+                  '#${widget.order.orderCode}',
                   style: AppTextStyles.titleMedium.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -121,20 +162,29 @@ class _OrderListItemState extends State<OrderListItem> {
                     borderRadius: BorderRadius.circular(20.r),
                     border: Border.all(color: statusColor.withOpacity(0.3)),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(statusIcon, color: statusColor, size: 16.sp),
-                      AppSpacing.w4,
-                      Text(
-                        statusText,
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: statusColor,
-                          fontWeight: FontWeight.bold,
+                  child: _isRefreshing
+                      ? SizedBox(
+                          width: 16.sp,
+                          height: 16.sp,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: statusColor,
+                          ),
+                        )
+                      : Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(statusIcon, color: statusColor, size: 16.sp),
+                            AppSpacing.w4,
+                            Text(
+                              statusText,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: statusColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
                 ),
               ],
             ),
@@ -209,8 +259,9 @@ class _OrderListItemState extends State<OrderListItem> {
                   AppSpacing.w8,
                   Expanded(
                     child: Text(
-                      widget.order['shipping_address'] ??
-                          'orders.no_address'.tr(),
+                      widget.order.shippingAddress.isNotEmpty
+                          ? widget.order.shippingAddress
+                          : 'orders.no_address'.tr(),
                       style: AppTextStyles.bodyMedium,
                     ),
                   ),
@@ -223,7 +274,9 @@ class _OrderListItemState extends State<OrderListItem> {
                   AppSpacing.w8,
                   Expanded(
                     child: Text(
-                      widget.order['phone'] ?? 'orders.no_phone'.tr(),
+                      widget.order.phone.isNotEmpty
+                          ? widget.order.phone
+                          : 'orders.no_phone'.tr(),
                       style: AppTextStyles.bodyMedium,
                     ),
                   ),
@@ -283,8 +336,7 @@ class _OrderListItemState extends State<OrderListItem> {
           icon: Icons.home,
           title: 'orders.step_delivered'.tr(),
           isActive: currentStep >= 3,
-          isCompleted:
-              false, // Last step doesn't need to show 'completed' check inside icon
+          isCompleted: false,
         ),
       ],
     );
@@ -296,35 +348,68 @@ class _OrderListItemState extends State<OrderListItem> {
     required bool isActive,
     required bool isCompleted,
   }) {
-    final color = isActive
-        ? AppColors.primary
-        : AppColors.textHint.withOpacity(0.5);
+    final color = isActive ? AppColors.primary : AppColors.textHint;
 
     return Column(
       children: [
-        Container(
-          width: 48.r,
-          height: 48.r,
-          decoration: BoxDecoration(
-            color: isActive
-                ? AppColors.primary.withOpacity(0.1)
-                : Colors.transparent,
-            shape: BoxShape.circle,
-            border: Border.all(color: color, width: isActive ? 2 : 1),
-          ),
-          child: Center(
-            child: isCompleted
-                ? Icon(Icons.check, color: AppColors.primary, size: 24.sp)
-                : Icon(icon, color: color, size: 24.sp),
-          ),
+        TweenAnimationBuilder<double>(
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.elasticOut,
+          tween: Tween(begin: 0.8, end: isActive ? 1.0 : 0.8),
+          builder: (context, scale, child) {
+            return Transform.scale(
+              scale: scale,
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 400),
+                width: 48.r,
+                height: 48.r,
+                decoration: BoxDecoration(
+                  color: isActive
+                      ? AppColors.primary.withOpacity(0.05)
+                      : Colors.transparent,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: color, width: isActive ? 2 : 1),
+                  boxShadow: isActive
+                      ? [
+                          BoxShadow(
+                            color: AppColors.primary.withOpacity(0.2),
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                          ),
+                        ]
+                      : [],
+                ),
+                child: Center(
+                  child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
+                    child: isCompleted
+                        ? Icon(
+                            Icons.check,
+                            key: const ValueKey('check'),
+                            color: AppColors.primary,
+                            size: 24.sp,
+                          )
+                        : Icon(
+                            icon,
+                            key: const ValueKey('icon'),
+                            color: color,
+                            size: 24.sp,
+                          ),
+                  ),
+                ),
+              ),
+            );
+          },
         ),
         AppSpacing.h8,
-        Text(
-          title,
+        AnimatedDefaultTextStyle(
+          duration: const Duration(milliseconds: 300),
           style: AppTextStyles.bodySmall.copyWith(
             color: color,
             fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+            fontSize: 10.sp,
           ),
+          child: Text(title),
         ),
       ],
     );
@@ -332,14 +417,24 @@ class _OrderListItemState extends State<OrderListItem> {
 
   Widget _buildTrackingLine({required bool isActive}) {
     return Expanded(
-      child: Container(
-        height: 2.h,
-        margin: EdgeInsets.only(
-          bottom: 24.h,
-        ), // Offset to align with circles not text
-        color: isActive
-            ? AppColors.primary
-            : AppColors.textHint.withOpacity(0.3),
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 24.h), // Align with icons
+        child: Stack(
+          children: [
+            Container(height: 2.h, color: AppColors.textHint.withOpacity(0.2)),
+            TweenAnimationBuilder<double>(
+              duration: const Duration(milliseconds: 800),
+              curve: Curves.easeInOut,
+              tween: Tween(begin: 0.0, end: isActive ? 1.0 : 0.0),
+              builder: (context, value, child) {
+                return FractionallySizedBox(
+                  widthFactor: value,
+                  child: Container(height: 2.h, color: AppColors.primary),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

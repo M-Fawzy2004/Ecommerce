@@ -14,4 +14,5 @@ abstract class CheckoutRepository {
     required String phone,
   });
   Future<Either<Failure, OrderEntity>> confirmOrder(String orderId);
+  Stream<Either<Failure, List<OrderEntity>>> watchOrders(String userId);
 }

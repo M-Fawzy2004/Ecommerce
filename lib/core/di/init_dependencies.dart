@@ -57,6 +57,7 @@ import '../../features/checkout/domain/usecases/create_order_usecase.dart';
 import '../../features/checkout/domain/usecases/confirm_order_usecase.dart';
 import '../../features/checkout/domain/usecases/process_payment_usecase.dart';
 import '../../features/checkout/presentation/cubit/checkout_cubit.dart';
+import '../../features/checkout/presentation/cubit/orders_cubit.dart';
 
 
 final serviceLocator = GetIt.instance;
@@ -329,6 +330,9 @@ void _initCheckoutDependencies() {
       confirmOrderUseCase: serviceLocator(),
       processPaymentUseCase: serviceLocator(),
     ),
+  );
+  serviceLocator.registerFactory(
+    () => OrdersCubit(repository: serviceLocator()),
   );
 }
 

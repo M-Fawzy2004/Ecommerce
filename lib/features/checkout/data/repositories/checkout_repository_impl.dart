@@ -61,4 +61,14 @@ class CheckoutRepositoryImpl implements CheckoutRepository {
       return Left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Stream<Either<Failure, List<OrderEntity>>> watchOrders(String userId) {
+    return supabaseDataSource.streamOrders(userId).map<Either<Failure, List<OrderEntity>>>(
+      (models) => Right(models),
+    ).handleError(
+      (error) {},
+      test: (error) => false, // Let errors pass through to onError in listen
+    );
+  }
 }
