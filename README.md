@@ -80,41 +80,11 @@ The project follows a strict **Clean Architecture** to ensure separation of conc
 
 ---
 
-## 🚀 Getting Started | البدء
-
-### Prerequisites
-- Flutter SDK: `^3.10.0`
-- Dart SDK: `^3.10.0`
-
-### Installation
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/M-Fawzy2004/Ecommerce.git
-   ```
-2. **Navigate to project directory**:
-   ```bash
-   cd Ecommerce
-   ```
-3. **Install dependencies**:
-   ```bash
-   flutter pub get
-   ```
-4. **Generate code (Injectable/JSON)**:
-   ```bash
-   flutter pub run build_runner build --delete-conflicting-outputs
-   ```
-5. **Run the app**:
-   ```bash
-   flutter run
-   ```
-
----
-
 ## 📜 License
 This project is for demonstration purposes. All rights reserved.
 
 ---
 
 <div align="center">
-  <p>Made with ❤️ by <b>M-Fawzy2004</b></p>
+  <p>Made with ❤️ by <b>Mohamed Fawzy</b></p>
 </div>
